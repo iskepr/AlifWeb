@@ -1,0 +1,19 @@
+{
+  "name": "alif2js",
+  "version": "1.0.0",
+  "description": "translator form alif arabic to js",
+  "keywords": [
+    "aliftojs"
+  ],
+  "license": "ISC",
+  "author": "Skepr",
+  "type": "commonjs",
+  "main": "translator.js",
+  "scripts": {
+    "test": "alif موقع"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3",
+    "express": "^4.21.2"
+  }
+}
