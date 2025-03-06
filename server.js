@@ -1,8 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
-const chokidar = require("chokidar");
-const { translateToJavaScript } = require("./alif");
+const { alifToJs } = require("./alif");
 const net = require("net");
 const { exec } = require("child_process");
 
@@ -14,11 +13,7 @@ async function isPortInUse(port) {
     const server = net.createServer();
 
     server.once("error", (err) => {
-      if (err.code === "EADDRINUSE") {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
+      resolve(err.code === "EADDRINUSE");
     });
 
     server.once("listening", () => {
@@ -33,7 +28,7 @@ async function killPort(port) {
   return new Promise((resolve) => {
     exec(`npx kill-port ${port}`, (error, stdout, stderr) => {
       if (error) {
-        console.error(`❌ خطأ أثناء إغلاق البورت ${port}:`, stderr);
+        console.error(`❌ خطأ أثناء إغلاق البورت ${port}:`, stderr.trim());
       } else {
         console.log(`✅ تم إغلاق البورت ${port} بنجاح.`);
       }
@@ -53,6 +48,7 @@ async function killPort(port) {
   app.get("/:file", (req, res) => {
     const fileName = req.params.file + ".alif";
     const filePath = path.join(__dirname, fileName);
+    const outputFile = path.join(__dirname, "index.html");
 
     if (!fs.existsSync(filePath)) {
       return res.status(404).send("❌ الملف غير موجود!");
@@ -60,11 +56,10 @@ async function killPort(port) {
 
     try {
       const arabicCode = fs.readFileSync(filePath, "utf8");
-      const translatedJS = translateToJavaScript(arabicCode);
-
-      res.send(`
+      const translatedJS = alifToJs(arabicCode);
+      const htmlContent = `
         <!DOCTYPE html>
-        <html>
+        <html lang="ar">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,45 +70,23 @@ async function killPort(port) {
           </script>
         </body>
         </html>
-      `);
+      `;
+      
+      fs.writeFileSync(outputFile, htmlContent, "utf8");
+      console.log("✅ تم إنشاء index.html بنجاح.");
+      res.send(htmlContent);
     } catch (error) {
       console.error("❌ خطأ أثناء قراءة الملف:", error);
       res.status(500).send("❌ حدث خطأ أثناء معالجة الملف.");
     }
   });
 
-  let clients = [];
-
-  app.get("/events", (req, res) => {
-    res.setHeader("Content-Type", "text/event-stream");
-    res.setHeader("Cache-Control", "no-cache");
-    res.setHeader("Connection", "keep-alive");
-
-    clients.push(res);
-    res.write("data: connected\n\n");
-
-    req.on("close", () => {
-      clients = clients.filter((client) => client !== res);
-    });
-  });
-
-  const watcher = chokidar.watch("*.alif", { ignoreInitial: true });
-
-  watcher.on("change", (filePath) => {
-    console.log(`🔄 تم تعديل الملف: ${path.basename(filePath)}`);
-
-    clients.forEach((client) => {
-      client.write("data: update\n\n");
-    });
-  });
-
   const server = app.listen(PORT, () => {
-    console.log(`🚀 السيرفر يعمل على http://localhost:${PORT}/`);
+    console.log(`🚀 السيرفر يعمل على http://localhost:${PORT}/main`);
   });
 
   process.on("SIGINT", () => {
     console.log("🛑 إيقاف السيرفر...");
-    watcher.close();
     server.close(() => {
       console.log("✅ السيرفر تم إيقافه بنجاح.");
       process.exit(0);

@@ -1,108 +1,81 @@
-const translationMap = {
-  اطبع: "console.log",
-  اذا: "if",
-  والا: "else",
-  بينما: "while",
-  لاجل: "for",
-  دالة: "function",
-  ارجع: "return",
-  كسر: "break",
-  html: {
-    تصميم: "style",
-    عنوان: "title",
-    عنوان1: "h1",
-    عنوان2: "h2",
-    عنوان3: "h3",
-    عنوان4: "h4",
-    عنوان5: "h5",
-    مجموعة: "div",
-    ادخل: "input",
-    نص: "p",
-    رابط: "a",
-    سطر: "br",
-    خط: "hr",
-  },
-};
+const readTranslations = require("./readTranslations"); // ✅ استيراد بشكل صحيح
+const { translateToHtml } = require("./translateHtml");
+const { translateToCSS } = require("./translateStyle");
 
-function translateToJavaScript(arabicCode) {
+function alifToJs(arabicCode) {
   let translatedJS = arabicCode;
+  const translationMap = readTranslations.getTranslationMap(); // ✅ استخدمها بهذه الطريقة
 
-  for (const [arabicKeyword, jsKeyword] of Object.entries(translationMap)) {
+  if (!translationMap || Object.keys(translationMap).length === 0) {
+    console.error("❌ خطأ: لم يتم تحميل الترجمة بشكل صحيح.");
+    return arabicCode;
+  }
+
+  for (const [arabicKeyword, jsKeyword] of Object.entries(translationMap["js"])) {
     let regex, replacement;
-
+  
     switch (arabicKeyword) {
       case "اطبع":
+      case "اشعار":
         regex = new RegExp(`${arabicKeyword}\\s*\\((.*?)\\)`, "g");
         replacement = `${jsKeyword}($1);`;
         break;
       case "اذا":
       case "بينما":
+        regex = new RegExp(`${arabicKeyword}\\s+(.+)\\s*:\\s*`, "g");
+        replacement = `${jsKeyword} ($1) {`;
+        break;
       case "لاجل":
-        regex = new RegExp(`${arabicKeyword}\\s*\\((.*?)\\)`, "g");
-        replacement = `${jsKeyword} ($1)`;
+        regex = new RegExp(
+          `${arabicKeyword}\\s+(\\S+)\\s+في\\s+مدى\\((\\S+)\\)\\s*:\\s*`,
+          "g"
+        );
+        replacement = (match, varName, range) =>
+          `for (let ${varName} = 0; ${varName} < ${range}; ${varName}++) {`;
         break;
       case "دالة":
-        regex = new RegExp(`${arabicKeyword}\\s+([^\s(]+)\\s*\\((.*?)\\)`, "g");
-        replacement = `${jsKeyword} $1($2)`;
+        regex = new RegExp(
+          `${arabicKeyword}\\s+([^\s(]+)\\s*\\((.*?)\\)\\s*:\\s*`,
+          "g"
+        );
+        replacement = `${jsKeyword} $1($2) {`;
         break;
       case "والا":
-        regex = new RegExp(arabicKeyword, "g");
-        replacement = `${jsKeyword}`;
+        regex = new RegExp(`${arabicKeyword}\\s*:`, "g");
+        replacement = `} else {`;
         break;
       case "ارجع":
-      case "كسر":
+      case "توقف":
         regex = new RegExp(arabicKeyword, "g");
         replacement = `${jsKeyword};`;
         break;
+      case "صح":
+      case "خطا":
+        regex = new RegExp(arabicKeyword, "g");
+        replacement = `${jsKeyword}`;
+        break;
+      case "# ":
+        regex = new RegExp(arabicKeyword, "g");
+        replacement = `${jsKeyword}`;
+        break;
+      default:
+        regex = new RegExp(`(?<!["'])\\b${arabicKeyword}\\b(?!["'])`, "g");
+        replacement = `${jsKeyword}`;
+        break;
     }
-
+  
     translatedJS = translatedJS.replace(regex, replacement);
   }
 
-  // معالجة عناصر HTML بشكل منفصل
-  for (const [arabicElement, jsElement] of Object.entries(
-    translationMap.html
-  )) {
-    let regex;
-    let replacement;
-
-    if (arabicElement === "رابط") {
-      regex = new RegExp(
-        `${arabicElement}\\s*\\((['"]?)(.*?)\\1,\\s*(['"]?)(.*?)\\3,\\s*(['"]?)(.*?)\\5?\\)`,
-        "g"
-      );
-      replacement = `document.write('<${jsElement} href="$2" style="$6">$4</${jsElement}>');`;
-      // ------------------------------------ المجموعة
-    } else if (arabicElement === "مجموعة") {
-      regex = new RegExp(`${arabicElement}\\s*\\((['"])(.*?)\\1\\)`, "g");
-
-      replacement = `document.write(\`<${jsElement}>\`); \${RegExp.$2} document.write(\`</${jsElement}>\`);`;
-
-      // ------------------------------------- الباقي
-    } else if (arabicElement === "تصميم" || arabicElement === "عنوان") {
-      regex = new RegExp(`${arabicElement}\\s*\\((['"]?)(.*?)\\1\\)`, "g");
-      replacement = `document.write(\`<${jsElement}>$2</${jsElement}>\`)`;
-    } else if (arabicElement === "سطر" || arabicElement === "خط") {
-      regex = new RegExp(arabicElement, "g");
-      replacement = `document.write(\`<${jsElement}>\`)`;
-    } else if (arabicElement === "ادخل") {
-      regex = new RegExp(
-        `${arabicElement}\\s*\\((['"]?)(.*?)\\1,\\s*(['"]?)(.*?)\\3\\)`,
-        "g"
-      );
-      replacement = `document.write(\`<${jsElement} style="$4">$2</${jsElement}>\`)`;
-    } else {
-      regex = new RegExp(
-        `${arabicElement}\\s*\\((['"]?)(.*?)\\1,\\s*(['"]?)(.*?)\\3\\)`,
-        "g"
-      );
-      replacement = `document.write(\`<${jsElement} style="$4">$2</${jsElement}>\`)`;
-    }
-
-    translatedJS = translatedJS.replace(regex, replacement);
-  }
+  translatedJS = translateToHtml(translatedJS, translationMap["html"]);
+  translatedJS = translateToCSS(translatedJS, {
+    ...translationMap["الالوان"],
+    ...translationMap["css"],
+  });
 
   return translatedJS;
 }
 
-module.exports = { translateToJavaScript };
+module.exports = { alifToJs };
+
+// regex = new RegExp(`${arabicKeyword}\\s*:`, "g");

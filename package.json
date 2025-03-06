@@ -10,10 +10,22 @@
   "type": "commonjs",
   "main": "translator.js",
   "scripts": {
-    "test": "alif موقع"
+    "start": "node server.js"
+  },
+  "bin": {
+    "app": "server.js"
   },
   "dependencies": {
     "chokidar": "^4.0.3",
     "express": "^4.21.2"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iskepr/AlifToJs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iskepr/AlifToJs/issues"
+  },
+  "homepage": "https://github.com/iskepr/AlifToJs#readme"
 }
