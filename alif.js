@@ -11,19 +11,27 @@ function alifToJs(arabicCode) {
     return arabicCode;
   }
 
-  for (const [arabicKeyword, jsKeyword] of Object.entries(translationMap["js"])) {
+  for (const [arabicKeyword, jsKeyword] of Object.entries(
+    translationMap["js"]
+  )) {
     let regex, replacement;
-  
+
     switch (arabicKeyword) {
       case "اطبع":
       case "اشعار":
         regex = new RegExp(`${arabicKeyword}\\s*\\((.*?)\\)`, "g");
         replacement = `${jsKeyword}($1);`;
         break;
+
       case "اذا":
       case "بينما":
-        regex = new RegExp(`${arabicKeyword}\\s+(.+)\\s*:\\s*`, "g");
-        replacement = `${jsKeyword} ($1) {`;
+        regex = new RegExp(
+          `${arabicKeyword}\\s+(.+)?:\\s*\\n(?:\\s*(.+)\\n?)`,
+          "g"
+        );
+
+        // regex = /(بينما|اذا)\s+(.+):\s*\n(?:\s*(.+)\n?)/g;
+        replacement = `${jsKeyword} ($1) {\n$2\n`;
         break;
       case "لاجل":
         regex = new RegExp(
@@ -38,11 +46,11 @@ function alifToJs(arabicCode) {
           `${arabicKeyword}\\s+([^\s(]+)\\s*\\((.*?)\\)\\s*:\\s*`,
           "g"
         );
-        replacement = `${jsKeyword} $1($2) {`;
+        replacement = `${jsKeyword} $1($2) {\n`;
         break;
       case "والا":
         regex = new RegExp(`${arabicKeyword}\\s*:`, "g");
-        replacement = `} else {`;
+        replacement = `} else {\n`;
         break;
       case "ارجع":
       case "توقف":
@@ -58,12 +66,16 @@ function alifToJs(arabicCode) {
         regex = new RegExp(arabicKeyword, "g");
         replacement = `${jsKeyword}`;
         break;
+      case "":
+        regex = /\b(\w+)\s*=\s*(.+)/g;
+        replacement = `let $1 = $2;`;
+        break;
       default:
         regex = new RegExp(`(?<!["'])\\b${arabicKeyword}\\b(?!["'])`, "g");
         replacement = `${jsKeyword}`;
         break;
     }
-  
+
     translatedJS = translatedJS.replace(regex, replacement);
   }
 
@@ -77,5 +89,3 @@ function alifToJs(arabicCode) {
 }
 
 module.exports = { alifToJs };
-
-// regex = new RegExp(`${arabicKeyword}\\s*:`, "g");
