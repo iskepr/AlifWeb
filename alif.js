@@ -1,16 +1,18 @@
-const readTranslations = require("./readTranslations"); // ✅ استيراد بشكل صحيح
+const readTranslations = require("./readTranslations");
 const { translateToHtml } = require("./translateHtml");
 const { translateToCSS } = require("./translateStyle");
 
 function alifToJs(arabicCode) {
   let translatedJS = arabicCode;
-  const translationMap = readTranslations.getTranslationMap(); // ✅ استخدمها بهذه الطريقة
+  const translationMap = readTranslations.getTranslationMap();
 
+  // التأكد من تحميل الترجمات بشكل صحيح
   if (!translationMap || Object.keys(translationMap).length === 0) {
     console.error("❌ خطأ: لم يتم تحميل الترجمة بشكل صحيح.");
     return arabicCode;
   }
 
+  // ترجمة الكلمات المفتاحية إلى JavaScript
   for (const [arabicKeyword, jsKeyword] of Object.entries(
     translationMap["js"]
   )) {
@@ -22,40 +24,32 @@ function alifToJs(arabicCode) {
         regex = new RegExp(`${arabicKeyword}\\s*\\((.*?)\\)`, "g");
         replacement = `${jsKeyword}($1);`;
         break;
-
       case "اذا":
       case "بينما":
         regex = new RegExp(
-          `${arabicKeyword}\\s+(.+)?:\\s*\\n(?:\\s*(.+)\\n?)`,
+          `${arabicKeyword}\\s+(.+)?:\\s*\\n+((?:\\s{3}.+)+)`,
           "g"
         );
-
-        // regex = /(بينما|اذا)\s+(.+):\s*\n(?:\s*(.+)\n?)/g;
-        replacement = `${jsKeyword} ($1) {\n$2\n`;
+        replacement = `${jsKeyword} ($1) {\n$2\n }`;
         break;
       case "لاجل":
         regex = new RegExp(
-          `${arabicKeyword}\\s+(\\S+)\\s+في\\s+مدى\\((\\S+)\\)\\s*:\\s*`,
+          `${arabicKeyword}\\s+(\\S+)\\s+في\\s+مدى\\((\\S+)\\)\\s*:\\s*\\n+((?:\\s{3}.+)+)`,
           "g"
         );
-        replacement = (match, varName, range) =>
-          `for (let ${varName} = 0; ${varName} < ${range}; ${varName}++) {`;
+        replacement = (match, varName, range, content) =>
+          `for (let ${varName} = 0; ${varName} < ${range}; ${varName}++) {\n${content}\n  }`;
         break;
       case "دالة":
         regex = new RegExp(
-          `${arabicKeyword}\\s+([^\s(]+)\\s*\\((.*?)\\)\\s*:\\s*`,
+          `${arabicKeyword}\\s+([^\\s(]+)\\s*\\((.*?)\\)\\s*:\\s*\\n+((?:\\s{4}.+)+)`,
           "g"
         );
-        replacement = `${jsKeyword} $1($2) {\n`;
+        replacement = `${jsKeyword} $1($2) {\n$3\n   }`;
         break;
       case "والا":
-        regex = new RegExp(`${arabicKeyword}\\s*:`, "g");
-        replacement = `} else {\n`;
-        break;
-      case "ارجع":
-      case "توقف":
-        regex = new RegExp(arabicKeyword, "g");
-        replacement = `${jsKeyword};`;
+        regex = new RegExp(`${arabicKeyword}\\s*:\\s*\\n+((?:\\s{1}.+)+)`, "g");
+        replacement = `else {\n$1\n}`;
         break;
       case "صح":
       case "خطا":
@@ -64,15 +58,15 @@ function alifToJs(arabicCode) {
         break;
       case "# ":
         regex = new RegExp(arabicKeyword, "g");
-        replacement = `${jsKeyword}`;
+        replacement = `${jsKeyword} `;
         break;
       case "":
         regex = /\b(\w+)\s*=\s*(.+)/g;
         replacement = `let $1 = $2;`;
         break;
       default:
-        regex = new RegExp(`(?<!["'])\\b${arabicKeyword}\\b(?!["'])`, "g");
-        replacement = `${jsKeyword}`;
+        regex = new RegExp(arabicKeyword, "g");
+        replacement = `${jsKeyword};`;
         break;
     }
 
