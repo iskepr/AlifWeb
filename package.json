@@ -1,31 +1,31 @@
 {
-  "name": "alif2js",
+  "name": "alifweb",
   "version": "1.0.0",
-  "description": "translator form alif arabic to js",
+  "description": "An Arabic programming language for the web",
   "keywords": [
-    "aliftojs"
+    "alifweb",
+    "alif",
+    "arabic"
   ],
   "license": "ISC",
   "author": "Skepr",
   "type": "commonjs",
-  "main": "translator.js",
+  "main": "alifweb",
   "scripts": {
-    "start": "node server.js"
+    "start": "node alifweb"
   },
   "bin": {
-    "app": "server.js"
+    "app": "alifweb"
   },
-  "dependencies": {
-    "chokidar": "^4.0.3",
-    "express": "^4.21.2"
+  "devDependencies": {
+    "@types/node": "^22.14.1"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iskepr/AlifToJs.git"
+    "url": "https://github.com/iskepr/AlifWeb.git"
   },
   "bugs": {
-    "url": "https://github.com/iskepr/AlifToJs/issues"
+    "url": "https://github.com/iskepr/AlifWeb/issues"
   },
-  "homepage": "https://github.com/iskepr/AlifToJs#readme"
+  "homepage": "https://github.com/iskepr/AlifWeb#readme"
 }
