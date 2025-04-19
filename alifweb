@@ -1,13 +1,10 @@
 #!/usr/bin/env node
-const fs = require("fs");
-const path = require("path");
-const { تحليل_الشفرة } = require("./src/lexer");
-const { محلل_الرموز } = require("./src/parser");
-const { توليد_كود } = require("./src/generator");
-const http = require("http");
+const { تشغيل_الف } = require("./src/Models/AlifRun");
+const { بناء_الف } = require("./src/Models/AlifBuild");
 
 // المدخلات في الطرفية
 const command = process.argv[2];
+const fileName = process.argv[3];
 if (["--version", "ص", "اصدار"].includes(command)) {
     console.log("0.1.0 اصدار لغة الف للويب");
 } else if (["--help", "م", "مساعدة"].includes(command)) {
@@ -17,47 +14,16 @@ if (["--version", "ص", "اصدار"].includes(command)) {
     اسم_الملف.الف: تشغيل ملف محدد.
     عدم كتابة شئ: تشغيل ملف رئيسي.الف.
     `);
-} else {
-    if (["alif", "الف"].includes(command)) {
-        runAlif(command);
+} else if (["build", "بناء"].includes(command)) {
+    if (fileName && (fileName.endsWith(".alif") || fileName.endsWith(".الف"))) {
+        بناء_الف(fileName);
     } else {
-        runAlif();
+        بناء_الف();
     }
-}
-
-function runAlif(fileName) {
-    const مسار_الملف = path.join(
-        __dirname,
-        fileName ? fileName : "./رئيسي.الف"
-    );
-    fs.readFile(مسار_الملف, "utf8", (خطأ, شفرة) => {
-        if (خطأ) {
-            console.error("خطأ في قراءة الملف:", خطأ);
-            return;
-        }
-
-        const رموز = تحليل_الشفرة(شفرة);
-        const ast = محلل_الرموز(رموز);
-        const كود_js = توليد_كود(ast);
-        const server = http.createServer((req, res) => {
-            res.writeHead(200, { "Content-Type": "text/html" });
-            res.end(`
-              <!DOCTYPE html>
-              <html lang="ar">
-              <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>لغة ألف</title>
-              </head>
-              <body>
-                <script>${كود_js}</script>
-              </body>
-              </html>
-            `);
-        });
-
-        server.listen(3000, () => {
-            console.log("السيرفر يعمل على http://localhost:3000");
-        });
-    });
+} else {
+    if (command.endsWith(".alif") || command.endsWith(".الف")) {
+        تشغيل_الف(command);
+    } else {
+        تشغيل_الف();
+    }
 }
