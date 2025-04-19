@@ -1,7 +1,6 @@
 const fs = require("fs");
 const http = require("http");
 const path = require("path");
-const terser = require("terser");
 
 const { تحليل_الشفرة } = require("../AlifLexer");
 const { محلل_الرموز } = require("../AlifParser");

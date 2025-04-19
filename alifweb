@@ -21,7 +21,7 @@ if (["--version", "ص", "اصدار"].includes(command)) {
         بناء_الف();
     }
 } else {
-    if (command.endsWith(".alif") || command.endsWith(".الف")) {
+    if (command && (command.endsWith(".alif") || command.endsWith(".الف"))) {
         تشغيل_الف(command);
     } else {
         تشغيل_الف();
