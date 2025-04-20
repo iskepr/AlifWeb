@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/iskepr/AlifWeb/issues"
   },
-  "homepage": "https://github.com/iskepr/AlifWeb#readme"
+  "homepage": "https://github.com/iskepr/AlifWeb#readme",
+  "dependencies": {
+    "esbuild": "^0.25.2"
+  }
 }
