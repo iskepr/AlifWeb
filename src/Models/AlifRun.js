@@ -13,6 +13,9 @@ function تشغيل_الف(fileName) {
         process.cwd(),
         fileName ? fileName : "./رئيسي.الف"
     );
+    const اسم_المف = fileName
+        ? path.basename(fileName, path.extname(fileName))
+        : "رئيسي";
 
     let server;
 
@@ -53,11 +56,10 @@ function تشغيل_الف(fileName) {
               <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>لغة ألف</title>
+                <title>${اسم_المف}</title>
               </head>
               <body>
                 <script>
-                  // إضافة الكود المترجم هنا
                   ${كود_مترجم}
                 </script>
               </body>
@@ -66,7 +68,6 @@ function تشغيل_الف(fileName) {
         });
 
         const PORT = 3000;
-
         server
             .listen(PORT, () => {
                 console.log(`السيرفر على http://localhost:${PORT}`);
