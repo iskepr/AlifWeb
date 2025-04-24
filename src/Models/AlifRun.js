@@ -22,8 +22,7 @@ function تشغيل_الف(fileName) {
     const buildCode = () => {
         fs.readFile(مسار_الملف, "utf8", async (خطأ, شفرة) => {
             if (خطأ) {
-                console.error(`الملف "${مسار_الملف}" غير موجود`);
-                return;
+                throw new Error(`الملف "${مسار_الملف}" غير موجود`);
             }
 
             try {
@@ -36,8 +35,8 @@ function تشغيل_الف(fileName) {
                 // console.log(ast);
 
                 كود_مترجم = توليد_كود(ast);
-                // console.log(" ------------------------------------ توليد_كود");
-                // console.log(كود_مترجم);
+                console.log(" ------------------------------------ توليد_كود");
+                console.log(كود_مترجم);
 
                 console.log("كود جديد تولد");
             } catch (e) {
