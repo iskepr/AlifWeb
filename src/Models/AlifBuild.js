@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const esbuild = require("esbuild");
+const terser = require("terser");
 
 const { تحليل_الشفرة } = require("../AlifLexer");
 const { محلل_الرموز } = require("../AlifParser");
@@ -23,13 +24,19 @@ async function بناء_الف(fileName) {
         const كود_مترجم = توليد_كود(ast);
 
         const تصغير = async (الكود) => {
-            const result = await esbuild.transform(الكود, {
+            const esbuildResult = await esbuild.transform(الكود, {
                 minify: true,
                 target: "es2020",
                 format: "iife",
                 charset: "utf8",
             });
-            return result.code;
+
+            const terserResult = await terser.minify(esbuildResult.code, {
+                compress: true,
+                mangle: true,
+            });
+
+            return terserResult.code;
         };
 
         const كود_مصغر = await تصغير(كود_مترجم);
@@ -63,9 +70,9 @@ async function بناء_الف(fileName) {
             "utf8"
         );
 
-        console.log("تم بناء المشروع داخل بناء/ويب/");
+        console.log("✅ تم بناء المشروع وتحسينه داخل بناء/ويب/");
     } catch (e) {
-        console.error("خطأ أثناء التوليد:", e.message);
+        console.error("❌ خطأ أثناء التوليد:", e.message);
     }
 }
 
