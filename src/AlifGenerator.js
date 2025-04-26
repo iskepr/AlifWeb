@@ -222,6 +222,43 @@ function إنشاء_الشفرة(ast, مستوى = 0, عداد = { قيمة: 0 }
             const سطر5 = `__fragment.appendChild(${اسم});`;
             return [سطر1, سطر2, سطر3, سطر4, سطر5].join("\n\t");
         },
+        عمودي: (عقدة) => {
+            عداد.قيمة++;
+            const قيم = عقدة.قيم.map(({ القيمة }) =>
+                إنشاء_الشفرة(القيمة, 0, عداد)
+            );
+            const اسم = `عنصر${عداد.قيمة}`;
+            const تعريف = `const ${اسم} = document.createElement("div");`;
+            const تصميم = `${اسم}.style = "display:flex; flex-direction:column;" + ${قيم[0]};`;
+            const العناصر = عقدة.اوامر
+                .map((عنصر) => {
+                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
+                    return كود.replace(/__fragment/g, اسم);
+                })
+                .join("\n\t");
+            const تجميع = `__fragment.appendChild(${اسم});`;
+
+            return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
+        },
+
+        رأسي: (عقدة) => {
+            عداد.قيمة++;
+            const قيم = عقدة.قيم.map(({ القيمة }) =>
+                إنشاء_الشفرة(القيمة, 0, عداد)
+            );
+            const اسم = `عنصر${عداد.قيمة}`;
+            const تعريف = `const ${اسم} = document.createElement("div");`;
+            const تصميم = `${اسم}.style = "display:flex; flex-direction:row;" + ${قيم[0]};`;
+            const العناصر = عقدة.اوامر
+                .map((عنصر) => {
+                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
+                    return كود.replace(/__fragment/g, اسم);
+                })
+                .join("\n\t");
+            const تجميع = `__fragment.appendChild(${اسم});`;
+
+            return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
+        },
     };
 
     const مولد = مولدات[ast.نوع];
