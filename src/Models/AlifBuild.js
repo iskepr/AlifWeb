@@ -5,7 +5,7 @@ const terser = require("terser");
 
 const { تحليل_الشفرة } = require("../AlifLexer");
 const { محلل_الرموز } = require("../AlifParser");
-const { توليد_كود } = require("../AlifGenerator");
+const { إنشاء_الشفرة } = require("../AlifGenerator");
 
 async function بناء_الف(fileName) {
     const مسار_الملف = path.join(
@@ -21,7 +21,7 @@ async function بناء_الف(fileName) {
 
         const رموز = تحليل_الشفرة(شفرة);
         const ast = محلل_الرموز(رموز);
-        const كود_مترجم = توليد_كود(ast);
+        const كود_مترجم = إنشاء_الشفرة(ast);
 
         const تصغير = async (الكود) => {
             const esbuildResult = await esbuild.transform(الكود, {

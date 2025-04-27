@@ -18,6 +18,7 @@ function تشغيل_الف(fileName) {
         : "رئيسي";
 
     let server;
+    let clients = [];
 
     const buildCode = () => {
         fs.readFile(مسار_الملف, "utf8", async (خطأ, شفرة) => {
@@ -27,27 +28,40 @@ function تشغيل_الف(fileName) {
 
             try {
                 const رموز = تحليل_الشفرة(شفرة);
-                // console.log(" ------------------------------------ تحليل الشفرة ------------------------------------");
-                // console.log(رموز);
-
                 const ast = محلل_الرموز(رموز);
-                // console.log(" ------------------------------------ محلل الرموز ------------------------------------");
-                // console.log(ast);
 
                 كود_مترجم = إنشاء_الشفرة(ast);
-                console.log(" ------------------------------------ إنشاء الشفرة ------------------------------------");
+                console.log(
+                    " ------------------------------------ إنشاء الشفرة ------------------------------------"
+                );
                 console.log(كود_مترجم);
 
-                console.log(" ------------------------------------ تم إنشاء شفرة جديدة ------------------------------------");
+                console.log(
+                    " ------------------------------------ تم إنشاء شفرة جديدة ------------------------------------"
+                );
             } catch (e) {
                 console.error("خطأ أثناء التوليد:", e.message);
                 كود_مترجم = `console.error("خطأ في التوليد: ${e.message}");`;
             }
+            clients.forEach((client) => client.write("data: reload\n\n"));
         });
     };
 
     const createServer = () => {
         server = http.createServer((req, res) => {
+            if (req.url === "/events") {
+                res.writeHead(200, {
+                    "Content-Type": "text/event-stream",
+                    "Cache-Control": "no-cache",
+                    Connection: "keep-alive",
+                });
+                res.write("\n");
+                clients.push(res);
+                req.on("close", () => {
+                    clients = clients.filter((client) => client !== res);
+                });
+                return;
+            }
             res.writeHead(200, { "Content-Type": "text/html" });
             res.end(`
               <!DOCTYPE html>
@@ -60,6 +74,10 @@ function تشغيل_الف(fileName) {
               <body>
                 <script>
                   ${كود_مترجم}
+                </script>
+                <script>
+                  const evtSource = new EventSource('/events');
+                  evtSource.onmessage = () => window.location.reload();
                 </script>
               </body>
               </html>
@@ -95,8 +113,20 @@ function تشغيل_الف(fileName) {
 
     // متابعة التغييرات في الملف وإعادة بناء الكود
     fs.watchFile(مسار_الملف, () => {
-        console.log(`تم تعديل الملف "${مسار_الملف}"`);
+        console.log(`تم تعديل الملف "${اسم_المف}"`);
         buildCode();
+    });
+
+    // لو التطبيق قفل، نقفل السيرفر وننهي كل الـ clients
+    process.on("SIGINT", () => {
+        console.log("\nجارٍ إيقاف السيرفر...");
+
+        clients.forEach((client) => client.end()); // نقفل كل الاتصالات
+        if (server)
+            server.close(() => {
+                console.log("تم إيقاف السيرفر بنجاح.");
+                process.exit(0); // خروج نظيف
+            });
     });
 }
 

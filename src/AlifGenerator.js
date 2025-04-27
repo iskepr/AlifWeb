@@ -4,11 +4,14 @@ function إنشاء_الشفرة(ast, مستوى = 0, عداد = { قيمة: 0 }
             const كود = عقدة.جمل
                 .map((ج) => إنشاء_الشفرة(ج, مستوى, عداد, true))
                 .join("\n");
-            return (
-                `const __fragment = document.createDocumentFragment();\n` +
-                `${كود}\n` +
-                `document.body.appendChild(__fragment);`
-            );
+            return `const __fragment = document.createDocumentFragment();
+                    const التصميم = document.createElement("style");
+                        التصميم.textContent = \`
+                        * {padding: 0; margin: 0; box-sizing: border-box;}
+                        \`;
+                        document.head.appendChild(التصميم);
+                    ${كود}
+                document.body.appendChild(__fragment);`;
         },
 
         متغير: (عقدة) => {
@@ -198,7 +201,31 @@ function إنشاء_الشفرة(ast, مستوى = 0, عداد = { قيمة: 0 }
             return `(${قيم})`;
         },
 
-        // html
+        // الواجه
+        صفحة: (عقدة) => {
+            عداد.قيمة++;
+            const قيم = عقدة.قيم.map(({ القيمة }) =>
+                إنشاء_الشفرة(القيمة, 0, عداد)
+            );
+            const اسم = `عنصر${عداد.قيمة}`;
+            const البيانات = `
+            document.title = ${قيم[0]};
+            const الشعار = document.createElement("link");
+            الشعار.rel = "icon";
+            الشعار.href = ${قيم[1]};
+            document.head.appendChild(الشعار);
+            `;
+            const تعريف = `const ${اسم} = document.createElement("div");`;
+            const تصميم = `${اسم}.style = "height: 100vh;" + ${قيم[2]};`;
+            const العناصر = عقدة.اوامر
+                .map((عنصر) => {
+                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
+                    return كود.replace(/__fragment/g, اسم);
+                })
+                .join("\n\t");
+            const تجميع = `__fragment.appendChild(${اسم});`;
+            return [البيانات, تعريف, تصميم, العناصر, تجميع].join("\n\t");
+        },
         نص: (عقدة) => {
             عداد.قيمة++;
             const قيم = عقدة.قيم.map(({ القيمة }) =>
@@ -239,10 +266,8 @@ function إنشاء_الشفرة(ast, مستوى = 0, عداد = { قيمة: 0 }
                 })
                 .join("\n\t");
             const تجميع = `__fragment.appendChild(${اسم});`;
-
             return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
         },
-
         رأسي: (عقدة) => {
             عداد.قيمة++;
             const قيم = عقدة.قيم.map(({ القيمة }) =>
@@ -258,7 +283,40 @@ function إنشاء_الشفرة(ast, مستوى = 0, عداد = { قيمة: 0 }
                 })
                 .join("\n\t");
             const تجميع = `__fragment.appendChild(${اسم});`;
-
+            return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
+        },
+        توسيط: (عقدة) => {
+            عداد.قيمة++;
+            const قيم = عقدة.قيم.map(({ القيمة }) =>
+                إنشاء_الشفرة(القيمة, 0, عداد)
+            );
+            const اسم = `عنصر${عداد.قيمة}`;
+            const تعريف = `const ${اسم} = document.createElement("div");`;
+            const تصميم = `${اسم}.style = "display:flex; align-items: center; justify-content: center;" + ${قيم[0]};`;
+            const العناصر = عقدة.اوامر
+                .map((عنصر) => {
+                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
+                    return كود.replace(/__fragment/g, اسم);
+                })
+                .join("\n\t");
+            const تجميع = `__fragment.appendChild(${اسم});`;
+            return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
+        },
+        بطاقة: (عقدة) => {
+            عداد.قيمة++;
+            const قيم = عقدة.قيم.map(({ القيمة }) =>
+                إنشاء_الشفرة(القيمة, 0, عداد)
+            );
+            const اسم = `عنصر${عداد.قيمة}`;
+            const تعريف = `const ${اسم} = document.createElement("div");`;
+            const تصميم = `${اسم}.style = "margin: 10px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;" + ${قيم[0]};`;
+            const العناصر = عقدة.اوامر
+                .map((عنصر) => {
+                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
+                    return كود.replace(/__fragment/g, اسم);
+                })
+                .join("\n\t");
+            const تجميع = `__fragment.appendChild(${اسم});`;
             return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
         },
     };
