@@ -54,12 +54,14 @@ async function بناء_الف(fileName) {
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${اسم_المف}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="alif,aliflang,alifweb,الف, الف ويب" />
+    <title>${اسم_المف}</title>
 </head>
 <body>
-  <script src="${اسم_المف}.alif.js"></script>
+    <script src="${اسم_المف}.alif.js"></script>
 </body>
 </html>
 `;
