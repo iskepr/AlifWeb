@@ -1,1 +1,74 @@
-(()=>{const e=document.createDocumentFragment(),t=document.createElement("style");t.textContent="\n                        * {padding: 0; margin: 0; box-sizing: border-box;}\n                        ",document.head.appendChild(t);let n=["الفجر","الظهر","العصر","المغرب","العشاء"],d=["4:42","12:54","4:31","7:32","8:56"];document.title="مواعيد الصلاة";const i=document.createElement("link");i.rel="icon",i.href="",document.head.appendChild(i);const c=document.createElement("div");c.style="height: 100vh; direction: rtl;background: #122; color: white; font-size: 20px;";const l=document.createElement("div");l.style="display:flex; align-items: center; justify-content: center;height: 100vh;";const o=document.createElement("div");o.style="margin: 10px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;undefined";const r=document.createElement("div");r.style="display:flex; align-items: center; justify-content: center;undefined";const a=document.createElement("div");a.style="display:flex; flex-direction:row;undefined";const p=document.createElement("p");p.innerHTML="الصلاة القادمة: ",p.style=void 0,a.appendChild(p);const s=document.createElement("div");s.style="display:flex; flex-direction:row;justify-content:space-between; background: gray; padding: 2px; border-radius: 10px;";const m=document.createElement("p");m.innerHTML="تبقى 10 دقائق علي الفجر",m.style=void 0,s.appendChild(m),a.appendChild(s),r.appendChild(a),o.appendChild(r);const u=document.createElement("div");u.style="display:flex; align-items: center; justify-content: center;undefined";const f=document.createElement("p");f.innerHTML="الصلوات",f.style=void 0,u.appendChild(f),o.appendChild(u);const y=document.createElement("div");y.style="display:flex; flex-direction:column;undefined";for(let e=0;e<5;e++){const t=document.createElement("div");t.style="display:flex; flex-direction:row;justify-content:space-between;";const i=document.createElement("p");i.innerHTML=n[e],i.style=void 0,t.appendChild(i);const c=document.createElement("p");c.innerHTML=d[e],c.style=void 0,t.appendChild(c),y.appendChild(t)}o.appendChild(y);const h=document.createElement("div");h.style="display:flex; align-items: center; justify-content: center;undefined";const x=document.createElement("a");x.innerHTML="برمجة محمد",x.href="https://iskepr.github.io",x.style="color: #155;",h.appendChild(x),o.appendChild(h),l.appendChild(o),c.appendChild(l),e.appendChild(c),document.body.appendChild(e)})();
+(() => {
+    const e = document.createDocumentFragment(),
+        t = document.createElement("style");
+    (t.textContent =
+        "\n                        * {padding: 0; margin: 0; box-sizing: border-box;}\n                        "),
+        document.head.appendChild(t);
+    let n = ["الفجر", "الظهر", "العصر", "المغرب", "العشاء"],
+        d = ["4:42", "12:54", "4:31", "7:32", "8:56"];
+    document.title = "مواعيد الصلاة";
+    const i = document.createElement("link");
+    (i.rel = "icon"), (i.href = ""), document.head.appendChild(i);
+    const c = document.createElement("div");
+    c.style =
+        "height: 100vh; direction: rtl;background: #122; color: white; font-size: 20px;";
+    const l = document.createElement("div");
+    l.style =
+        "display:flex; align-items: center; justify-content: center;height: 100vh;";
+    const o = document.createElement("div");
+    o.style =
+        "margin: 10px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;undefined";
+    const r = document.createElement("div");
+    r.style =
+        "display:flex; align-items: center; justify-content: center;undefined";
+    const a = document.createElement("div");
+    a.style = "display:flex; flex-direction:row;undefined";
+    const p = document.createElement("p");
+    (p.innerHTML = "الصلاة القادمة: "), (p.style = void 0), a.appendChild(p);
+    const s = document.createElement("div");
+    s.style =
+        "display:flex; flex-direction:row;justify-content:space-between; background: gray; padding: 2px; border-radius: 10px;";
+    const m = document.createElement("p");
+    (m.innerHTML = "تبقى 10 دقائق علي الفجر"),
+        (m.style = void 0),
+        s.appendChild(m),
+        a.appendChild(s),
+        r.appendChild(a),
+        o.appendChild(r);
+    const u = document.createElement("div");
+    u.style =
+        "display:flex; align-items: center; justify-content: center;undefined";
+    const f = document.createElement("p");
+    (f.innerHTML = "الصلوات"),
+        (f.style = void 0),
+        u.appendChild(f),
+        o.appendChild(u);
+    const y = document.createElement("div");
+    y.style = "display:flex; flex-direction:column;undefined";
+    for (let e = 0; e < 5; e++) {
+        const t = document.createElement("div");
+        t.style =
+            "display:flex; flex-direction:row;justify-content:space-between;";
+        const i = document.createElement("p");
+        (i.innerHTML = n[e]), (i.style = void 0), t.appendChild(i);
+        const c = document.createElement("p");
+        (c.innerHTML = d[e]),
+            (c.style = void 0),
+            t.appendChild(c),
+            y.appendChild(t);
+    }
+    o.appendChild(y);
+    const h = document.createElement("div");
+    h.style =
+        "display:flex; align-items: center; justify-content: center;undefined";
+    const x = document.createElement("a");
+    (x.innerHTML = "برمجة محمد"),
+        (x.href = "https://iskepr.github.io"),
+        (x.style = "color: #155;"),
+        h.appendChild(x),
+        o.appendChild(h),
+        l.appendChild(o),
+        c.appendChild(l),
+        e.appendChild(c),
+        document.body.appendChild(e);
+})();
