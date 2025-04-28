@@ -1,7 +1,3 @@
 node_modules
-.env
-.DS_Store
-*.exe
-*.html
 بناء
 dist
