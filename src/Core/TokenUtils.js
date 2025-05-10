@@ -1,12 +1,21 @@
 export let المؤشر = 0;
 
 export function احصل(الرموز) {
+    if (!الرموز || !Array.isArray(الرموز)) {
+        throw new Error('الرموز غير معرفة أو غير صحيحة "احصل" ' + الرموز);
+    }
+    if (المؤشر >= الرموز.length) {
+        return null;
+    }
     return الرموز[المؤشر];
 }
 
 export function التالي(الرموز) {
+    if (!الرموز || !Array.isArray(الرموز)) {
+        throw new Error('الرموز غير معرفة أو غير صحيحة " التالي " ' + الرموز);
+    }
     المؤشر++;
-    return احصل(الرموز, المؤشر);
+    return احصل(الرموز);
 }
 
 export function تحقق(الرموز, النوع, القيمة = null) {
