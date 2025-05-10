@@ -1,5 +1,6 @@
 import { احصل, تحقق, تطابق, المؤشر } from "../TokenUtils.js";
 import { محلل_التعبير } from "../Expressions.js";
+import { إنشاء_الشفرة } from "../../AlifGenerator.js";
 
 export function محلل_متغير(الرموز) {
     if (!الرموز || !Array.isArray(الرموز)) {
@@ -52,4 +53,34 @@ export function محلل_متغير(الرموز) {
     // لا يوجد إسناد، أعد المؤشر
     المؤشر = البداية;
     return null;
+}
+
+export function منشئ_متغير(مستوى, عداد, عقدة) {
+    const الاسم = عقدة.اسم;
+    const القيمة = إنشاء_الشفرة(عقدة.قيمة, مستوى, عداد);
+    // تتبع المتغيرات المعلنة لتجنّب إعادة let
+    if (!عداد.declaredVars) عداد.declaredVars = new Set();
+    if (عداد.declaredVars.has(الاسم)) {
+        return `${الاسم} = ${القيمة};`;
+    } else {
+        عداد.declaredVars.add(الاسم);
+        return `let ${الاسم} = ${القيمة};`;
+    }
+}
+
+export function منشئ_متغير_مجمع(مستوى, عداد, عقدة) {
+    if (!عداد.declaredVars) عداد.declaredVars = new Set();
+    const أسماء = عقدة.أسماء;
+    const قيم = عقدة.قيم.map((v) => إنشاء_الشفرة(v, مستوى, عداد));
+    return أسماء
+        .map((الاسم, index) => {
+            const قيمة = قيم[index] !== undefined ? قيم[index] : "undefined";
+            if (عداد.declaredVars.has(الاسم)) {
+                return `${الاسم} = ${قيمة};`;
+            } else {
+                عداد.declaredVars.add(الاسم);
+                return `let ${الاسم} = ${قيمة};`;
+            }
+        })
+        .join("\n");
 }
