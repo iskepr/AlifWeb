@@ -66,9 +66,13 @@ export function تشغيل_الف(fileName) {
                     <div class="message-text-container" dir="rtl" style="
                     display:flex;flex-direction:column;justify-content:center;align-items:flex-start;flex-grow:1">
                     <p class="message-text" style="
-                        margin:0;cursor:default;color:#d10d0d;font-size:17px;font-weight:700">حدث خطأ: ${e.line == undefined ? "" : e.line}</p>
+                        margin:0;cursor:default;color:#d10d0d;font-size:17px;font-weight:700">حدث خطأ: ${
+                            e.line == undefined ? "" : e.line
+                        }</p>
                     <p class="sub-text" style="
-                        margin:0;cursor:default;font-size:14px;color:#999">${e.message}</p>
+                        margin:0;cursor:default;font-size:14px;color:#999">${
+                            e.message
+                        }</p>
                     </div>
                 </div>
                 \`;
