@@ -1,13 +1,13 @@
-const fs = require("fs");
-const path = require("path");
-const esbuild = require("esbuild");
-const terser = require("terser");
+import fs from "fs";
+import path from "path";
+import esbuild from "esbuild";
+import { minify } from "terser";
 
-const { تحليل_الشفرة } = require("../AlifLexer");
-const { محلل_الرموز } = require("../AlifParser");
-const { إنشاء_الشفرة } = require("../AlifGenerator");
+import { تحليل_الشفرة } from "../AlifLexer.js";
+import { محلل_الرموز } from "../AlifParser.js";
+import { إنشاء_الشفرة } from "../AlifGenerator.js";
 
-async function بناء_الف(fileName) {
+export async function بناء_الف(fileName) {
     const مسار_الملف = path.join(
         process.cwd(),
         fileName ? fileName : "./رئيسي.الف"
@@ -31,7 +31,7 @@ async function بناء_الف(fileName) {
                 charset: "utf8",
             });
 
-            const terserResult = await terser.minify(esbuildResult.code, {
+            const terserResult = await minify(esbuildResult.code, {
                 compress: true,
                 mangle: true,
             });
@@ -77,5 +77,3 @@ async function بناء_الف(fileName) {
         console.error("❌ خطأ أثناء التوليد:", e.message);
     }
 }
-
-module.exports = { بناء_الف };

@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-const { تشغيل_الف } = require("./src/Models/AlifRun");
-const { بناء_الف } = require("./src/Models/AlifBuild");
+import { تشغيل_الف } from "./src/Models/AlifRun.js";
+import { بناء_الف } from "./src/Models/AlifBuild.js";
 
 // المدخلات في الطرفية
 const command = process.argv[2];
 const fileName = process.argv[3];
-if (["--version", "ص", "اصدار"].includes(command)) {
+if (["-v", "ص", "اصدار"].includes(command)) {
     console.log("0.1.0 اصدار لغة الف للويب");
-} else if (["--help", "م", "مساعدة"].includes(command)) {
+} else if (["-h", "م", "مساعدة"].includes(command)) {
     console.log(`
-    اصدار - ص: اصدار اللغة.
-    مساعدة - م: اظهار هاذه القائمة
+    -v, ص, اصدار: اصدار اللغة.
+    -h, م, مساعدة: اظهار هاذه القائمة
     اسم_الملف.الف: تشغيل ملف محدد.
     عدم كتابة شئ: تشغيل ملف رئيسي.الف.
     `);

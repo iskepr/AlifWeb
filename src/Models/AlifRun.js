@@ -1,14 +1,14 @@
-const fs = require("fs");
-const http = require("http");
-const path = require("path");
+import fs from "fs";
+import http from "http";
+import path from "path";
 
-const { تحليل_الشفرة } = require("../AlifLexer");
-const { محلل_الرموز } = require("../AlifParser");
-const { إنشاء_الشفرة } = require("../AlifGenerator");
+import { تحليل_الشفرة } from "../AlifLexer.js";
+import { محلل_الرموز } from "../AlifParser.js";
+import { إنشاء_الشفرة } from "../AlifGenerator.js";
 
 let كود_مترجم = ""; // سيتم تخزين الكود الناتج هنا
 
-function تشغيل_الف(fileName) {
+export function تشغيل_الف(fileName) {
     const مسار_الملف = path.join(
         process.cwd(),
         fileName ? fileName : "./رئيسي.الف"
@@ -161,5 +161,3 @@ function تشغيل_الف(fileName) {
             });
     });
 }
-
-module.exports = { تشغيل_الف };
