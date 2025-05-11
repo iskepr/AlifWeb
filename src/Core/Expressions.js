@@ -1,5 +1,6 @@
 import { احصل, التالي, تحقق, تطابق } from "./TokenUtils.js";
 import { المحللات } from "../AlifParser.js";
+import { محلل_العمليات } from "./Statements/AlifOperations.js";
 
 export function محلل_التعبير(الرموز) {
     if (!الرموز || !Array.isArray(الرموز)) {
@@ -9,6 +10,16 @@ export function محلل_التعبير(الرموز) {
     }
 
     const الرمز = احصل(الرموز);
+
+    // دعم العمليات الحسابية
+    if (تحقق(الرموز, "رقم")) {
+        const لقطة = [...الرموز];
+        try {
+            return محلل_العمليات(الرموز);
+        } catch (e) {
+            الرموز.splice(0, الرموز.length, ...لقطة);
+        }
+    }
 
     // دعم التعابير: المعرف مع دعم الفهرس المربع
     if (تحقق(الرموز, "معرف")) {

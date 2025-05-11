@@ -4,6 +4,7 @@ import { منشئ_لاجل } from "./Core/Statements/AlifFor.js";
 import { منشئ_بينما } from "./Core/Statements/AlifWhile.js";
 import { منشئ_دالة } from "./Core/Statements/AlifFunction.js";
 import { منشئ_اذا } from "./Core/Statements/AlifIF.js";
+import { منشئ_عمليات } from "./Core/Statements/AlifOperations.js";
 
 export function إنشاء_الشفرة(
     ast,
@@ -135,12 +136,7 @@ export function إنشاء_الشفرة(
             return v;
         },
         معرف: (عقدة) => `${عقدة.اسم}`,
-        عملية: (عقدة) => {
-            const يسار = إنشاء_الشفرة(عقدة.يسار, 0, عداد);
-            const يمين = إنشاء_الشفرة(عقدة.يمين, 0, عداد);
-            const عامل = عقدة.عامل;
-            return `(${يسار} ${عامل} ${يمين})`;
-        },
+        عملية: (عقدة) => منشئ_عمليات(عقدة),
         تعابيرات: (عقدة) => {
             const list = عقدة.قيم
                 .map((v) => إنشاء_الشفرة(v, 0, عداد))

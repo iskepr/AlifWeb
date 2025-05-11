@@ -11,6 +11,7 @@ import { محلل_بينما } from "./Core/Statements/AlifWhile.js";
 import { محلل_دالة } from "./Core/Statements/AlifFunction.js";
 import { محلل_اذا } from "./Core/Statements/AlifIF.js";
 import { محلل_الواجه_داخلي, محلل_الواجه } from "./Core/Statements/AlifUI.js";
+import { محلل_العمليات } from "./Core/Statements/AlifOperations.js";
 
 export const المحللات = {
     اطبع: محلل_عام_للاقواس,
@@ -48,6 +49,7 @@ export const المحللات = {
     دالة: محلل_دالة,
     اذا: محلل_اذا,
     إذا: محلل_اذا,
+    عملية: محلل_العمليات,
     // ===== الواجه
     نص: محلل_الواجه,
     رابط: محلل_الواجه,
