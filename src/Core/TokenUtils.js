@@ -18,6 +18,14 @@ export function التالي(الرموز) {
     return احصل(الرموز);
 }
 
+export function السابق(الرموز) {
+    if (!الرموز || !Array.isArray(الرموز)) {
+        throw new Error('الرموز غير معرفة أو غير صحيحة " السابق " ' + الرموز);
+    }
+    المؤشر--;
+    return احصل(الرموز);
+}
+
 export function تحقق(الرموز, النوع, القيمة = null) {
     const الرمز = احصل(الرموز);
     if (!الرمز) return false;
