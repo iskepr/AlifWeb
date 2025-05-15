@@ -23,7 +23,8 @@ export function تشغيل_الف(fileName) {
     const buildCode = () => {
         fs.readFile(مسار_الملف, "utf8", async (خطأ, شفرة) => {
             if (خطأ) {
-                throw new Error(`الملف "${مسار_الملف}" غير موجود`);
+                console.error(`الملف "${مسار_الملف}" غير موجود`);
+                process.exit();
             }
 
             try {
@@ -38,7 +39,10 @@ export function تشغيل_الف(fileName) {
                     " ------------------------------------ تم إنشاء شفرة جديدة ------------------------------------"
                 );
             } catch (e) {
-                console.error("خطأ أثناء التوليد:", e.line? e.message + " " + e.line : e);
+                console.error(
+                    "خطأ أثناء التوليد:",
+                    e.line ? e.message + " " + e.line : e
+                );
                 كود_مترجم = `
                 // ------------------------------- خطأ -------------------------------
                 document.body.style = "background: linear-gradient(120deg, #111 20%, #d10d0d 42%, #111 80%); height: 98vh;";
