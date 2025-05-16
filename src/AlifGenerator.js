@@ -172,30 +172,14 @@ export function إنشاء_الشفرة(
         },
 
         // الواجهة
-        صفحة: (عقدة) => {
-            عداد.قيمة++;
-            const قيم = عقدة.قيم.map(({ القيمة }) =>
-                إنشاء_الشفرة(القيمة, 0, عداد)
-            );
-            const اسم = `عنصر${عداد.قيمة}`;
-            const البيانات = `
-            document.title = ${قيم[0]};
-            const الشعار = document.createElement("link");
-            الشعار.rel = "icon";
-            الشعار.href = ${قيم[1]};
-            document.head.appendChild(الشعار);
-            `;
-            const تعريف = `const ${اسم} = document.createElement("div");`;
-            const تصميم = `${اسم}.style = "height: 100vh; direction: rtl;" + ${قيم[2]};`;
-            const العناصر = عقدة.اوامر
-                .map((عنصر) => {
-                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
-                    return كود.replace(/__fragment/g, اسم);
-                })
-                .join("\n\t");
-            const تجميع = `__fragment.appendChild(${اسم});`;
-            return [البيانات, تعريف, تصميم, العناصر, تجميع].join("\n\t");
-        },
+        صفحة: (عقدة) =>
+            منشئ_عام_الواجهة(
+                عقدة,
+                عداد,
+                "div",
+                "height: 100vh; direction: rtl;"
+            ),
+
         نص: (عقدة) => منشئ_عام_الواجهة(عقدة, عداد, "p"),
         رابط: (عقدة) => منشئ_عام_الواجهة(عقدة, عداد, "a"),
 

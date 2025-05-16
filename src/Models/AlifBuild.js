@@ -43,6 +43,9 @@ export async function بناء_الف(fileName) {
 
         const مجلد_الويب = path.join(process.cwd(), "بناء", "ويب");
         fs.mkdirSync(مجلد_الويب, { recursive: true });
+        fs.cpSync("المرفقات", path.join(مجلد_الويب, "المرفقات"), {
+            recursive: true,
+        });
 
         fs.writeFileSync(
             path.join(مجلد_الويب, `${اسم_المف}.alif.js`),
@@ -74,6 +77,6 @@ export async function بناء_الف(fileName) {
 
         console.log("✅ تم بناء المشروع وتحسينه داخل بناء/ويب/");
     } catch (e) {
-        console.error("❌ خطأ أثناء التوليد:", e.message);
+        console.error("خطأ أثناء التوليد:", e.message);
     }
 }

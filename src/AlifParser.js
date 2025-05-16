@@ -10,7 +10,7 @@ import { محلل_لاجل } from "./Core/Statements/AlifFor.js";
 import { محلل_بينما } from "./Core/Statements/AlifWhile.js";
 import { محلل_دالة } from "./Core/Statements/AlifFunction.js";
 import { محلل_اذا } from "./Core/Statements/AlifIF.js";
-import { محلل_الواجهة_داخلي, محلل_الواجهة } from "./Core/Statements/AlifUI.js";
+import { محلل_الواجهة } from "./Core/Statements/AlifUI.js";
 import { محلل_العمليات } from "./Core/Statements/AlifOperations.js";
 
 export const المحللات = {
@@ -50,11 +50,11 @@ export const المحللات = {
     // ===== الواجهة
     نص: محلل_الواجهة,
     رابط: محلل_الواجهة,
-    عمودي: محلل_الواجهة_داخلي,
-    رأسي: محلل_الواجهة_داخلي,
-    توسيط: محلل_الواجهة_داخلي,
-    بطاقة: محلل_الواجهة_داخلي,
-    صفحة: محلل_الواجهة_داخلي,
+    عمودي: محلل_الواجهة,
+    رأسي: محلل_الواجهة,
+    توسيط: محلل_الواجهة,
+    بطاقة: محلل_الواجهة,
+    صفحة: محلل_الواجهة,
 };
 
 export function محلل_الجملة(الرموز) {
