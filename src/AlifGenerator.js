@@ -5,6 +5,7 @@ import { منشئ_بينما } from "./Core/Statements/AlifWhile.js";
 import { منشئ_دالة } from "./Core/Statements/AlifFunction.js";
 import { منشئ_اذا } from "./Core/Statements/AlifIF.js";
 import { منشئ_عمليات } from "./Core/Statements/AlifOperations.js";
+import { منشئ_عام_الواجهة } from "./Core/Statements/AlifUI.js";
 
 export function إنشاء_الشفرة(
     ast,
@@ -170,7 +171,7 @@ export function إنشاء_الشفرة(
             return `${list}[${index}]`;
         },
 
-        // الواجه
+        // الواجهة
         صفحة: (عقدة) => {
             عداد.قيمة++;
             const قيم = عقدة.قيم.map(({ القيمة }) =>
@@ -195,99 +196,58 @@ export function إنشاء_الشفرة(
             const تجميع = `__fragment.appendChild(${اسم});`;
             return [البيانات, تعريف, تصميم, العناصر, تجميع].join("\n\t");
         },
-        نص: (عقدة) => {
-            عداد.قيمة++;
-            const قيم = عقدة.قيم.map(({ القيمة }) =>
-                إنشاء_الشفرة(القيمة, 0, عداد)
-            );
-            const اسم = `عنصر${عداد.قيمة}`;
-            const سطر1 = `const ${اسم} = document.createElement("p");`;
-            const سطر2 = `${اسم}.innerHTML = ${قيم[0]};`;
-            const سطر3 = `${اسم}.style = ${قيم[1]};`;
-            const سطر4 = `__fragment.appendChild(${اسم});`;
-            return [سطر1, سطر2, سطر3, سطر4].join("\n\t");
-        },
-        رابط: (عقدة) => {
-            عداد.قيمة++;
-            const قيم = عقدة.قيم.map(({ القيمة }) =>
-                إنشاء_الشفرة(القيمة, 0, عداد)
-            );
-            const اسم = `عنصر${عداد.قيمة}`;
-            const سطر1 = `const ${اسم} = document.createElement("a");`;
-            const سطر2 = `${اسم}.innerHTML = ${قيم[0]};`;
-            const سطر3 = `${اسم}.href = ${قيم[1]};`;
-            const سطر4 = `${اسم}.style = ${قيم[2]};`;
-            const سطر5 = `__fragment.appendChild(${اسم});`;
-            return [سطر1, سطر2, سطر3, سطر4, سطر5].join("\n\t");
-        },
-        عمودي: (عقدة) => {
-            عداد.قيمة++;
-            const قيم = عقدة.قيم.map(({ القيمة }) =>
-                إنشاء_الشفرة(القيمة, 0, عداد)
-            );
-            const اسم = `عنصر${عداد.قيمة}`;
-            const تعريف = `const ${اسم} = document.createElement("div");`;
-            const تصميم = `${اسم}.style = "display:flex; flex-direction:column;" + ${قيم[0]};`;
-            const العناصر = عقدة.اوامر
-                .map((عنصر) => {
-                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
-                    return كود.replace(/__fragment/g, اسم);
-                })
-                .join("\n\t");
-            const تجميع = `__fragment.appendChild(${اسم});`;
-            return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
-        },
-        رأسي: (عقدة) => {
-            عداد.قيمة++;
-            const قيم = عقدة.قيم.map(({ القيمة }) =>
-                إنشاء_الشفرة(القيمة, 0, عداد)
-            );
-            const اسم = `عنصر${عداد.قيمة}`;
-            const تعريف = `const ${اسم} = document.createElement("div");`;
-            const تصميم = `${اسم}.style = "display:flex; flex-direction:row;" + ${قيم[0]};`;
-            const العناصر = عقدة.اوامر
-                .map((عنصر) => {
-                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
-                    return كود.replace(/__fragment/g, اسم);
-                })
-                .join("\n\t");
-            const تجميع = `__fragment.appendChild(${اسم});`;
-            return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
-        },
-        توسيط: (عقدة) => {
-            عداد.قيمة++;
-            const قيم = عقدة.قيم.map(({ القيمة }) =>
-                إنشاء_الشفرة(القيمة, 0, عداد)
-            );
-            const اسم = `عنصر${عداد.قيمة}`;
-            const تعريف = `const ${اسم} = document.createElement("div");`;
-            const تصميم = `${اسم}.style = "display:flex; align-items: center; justify-content: center;" + ${قيم[0]};`;
-            const العناصر = عقدة.اوامر
-                .map((عنصر) => {
-                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
-                    return كود.replace(/__fragment/g, اسم);
-                })
-                .join("\n\t");
-            const تجميع = `__fragment.appendChild(${اسم});`;
-            return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
-        },
-        بطاقة: (عقدة) => {
-            عداد.قيمة++;
-            const قيم = عقدة.قيم.map(({ القيمة }) =>
-                إنشاء_الشفرة(القيمة, 0, عداد)
-            );
-            const اسم = `عنصر${عداد.قيمة}`;
-            const تعريف = `const ${اسم} = document.createElement("div");`;
-            const تصميم = `${اسم}.style = "margin: 10px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;" + ${قيم[0]};`;
-            const العناصر = عقدة.اوامر
-                .map((عنصر) => {
-                    const كود = إنشاء_الشفرة(عنصر, 0, عداد);
-                    return كود.replace(/__fragment/g, اسم);
-                })
-                .join("\n\t");
-            const تجميع = `__fragment.appendChild(${اسم});`;
-            return [تعريف, تصميم, العناصر, تجميع].join("\n\t");
-        },
+        نص: (عقدة) => منشئ_عام_الواجهة(عقدة, عداد, "p"),
+        رابط: (عقدة) => منشئ_عام_الواجهة(عقدة, عداد, "a"),
+
+        عمودي: (عقدة) =>
+            منشئ_عام_الواجهة(
+                عقدة,
+                عداد,
+                "div",
+                "display:flex; flex-direction:column;"
+            ),
+        رأسي: (عقدة) =>
+            منشئ_عام_الواجهة(
+                عقدة,
+                عداد,
+                "div",
+                "display:flex; flex-direction:row;"
+            ),
+        توسيط: (عقدة) =>
+            منشئ_عام_الواجهة(
+                عقدة,
+                عداد,
+                "div",
+                "display:flex; align-items: center; justify-content: center;"
+            ),
+        بطاقة: (عقدة) =>
+            منشئ_عام_الواجهة(
+                عقدة,
+                عداد,
+                "div",
+                "margin: 10px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;"
+            ),
+        رأسي: (عقدة) =>
+            منشئ_عام_الواجهة(
+                عقدة,
+                عداد,
+                "div",
+                "display:flex; flex-direction:row;"
+            ),
+        توسيط: (عقدة) =>
+            منشئ_عام_الواجهة(
+                عقدة,
+                عداد,
+                "div",
+                "display:flex; align-items: center; justify-content: center;"
+            ),
+        بطاقة: (عقدة) =>
+            منشئ_عام_الواجهة(
+                عقدة,
+                عداد,
+                "div",
+                "margin: 10px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;"
+            ),
     };
 
     const مولد = مولدات[ast.نوع];
