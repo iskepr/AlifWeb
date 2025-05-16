@@ -1,4 +1,7 @@
 export let المؤشر = 0;
+export function إعادة_تعيين_المؤشر() {
+    المؤشر = 0;
+}
 
 export function احصل(الرموز) {
     if (!الرموز || !Array.isArray(الرموز)) {

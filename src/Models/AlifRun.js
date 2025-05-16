@@ -5,6 +5,7 @@ import path from "path";
 import { تحليل_الشفرة } from "../AlifLexer.js";
 import { محلل_الرموز } from "../AlifParser.js";
 import { إنشاء_الشفرة } from "../AlifGenerator.js";
+import { إعادة_تعيين_المؤشر } from "../Core/TokenUtils.js";
 
 let كود_مترجم = ""; // سيتم تخزين الكود الناتج هنا
 
@@ -28,6 +29,7 @@ export function تشغيل_الف(fileName) {
             }
 
             try {
+                إعادة_تعيين_المؤشر();
                 const رموز = تحليل_الشفرة(شفرة);
                 const ast = محلل_الرموز(رموز);
                 // console.log("AST:", JSON.stringify(ast, null, 2));
