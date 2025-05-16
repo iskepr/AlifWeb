@@ -1,6 +1,7 @@
 import { احصل, التالي, السابق, تحقق, تطابق } from "./TokenUtils.js";
 import { المحللات } from "../AlifParser.js";
 import { محلل_العمليات } from "./Statements/AlifOperations.js";
+import { محلل_عام_للاقواس_يسبقها_نقطة } from "./Statements/AlifGeneral.js";
 
 export function محلل_التعبير(الرموز) {
     if (!الرموز || !Array.isArray(الرموز)) {
@@ -24,6 +25,12 @@ export function محلل_التعبير(الرموز) {
         if (تحقق(الرموز, "رمز_حسابي")) {
             السابق(الرموز);
             return محلل_العمليات(الرموز);
+        } else if (تحقق(الرموز, "نقطة")) {
+            التالي(الرموز);
+            const الكلمة = احصل(الرموز)?.القيمة;
+            السابق(الرموز);
+            السابق(الرموز);
+            return محلل_عام_للاقواس_يسبقها_نقطة(الرموز, الكلمة);
         } else {
             السابق(الرموز);
             const identToken = تطابق(الرموز, "معرف");
