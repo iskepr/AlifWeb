@@ -9,7 +9,7 @@ import { محلل_متغير } from "./Core/Statements/AlifVariable.js";
 import { محلل_لاجل } from "./Core/Statements/AlifFor.js";
 import { محلل_بينما } from "./Core/Statements/AlifWhile.js";
 import { محلل_دالة } from "./Core/Statements/AlifFunction.js";
-import { محلل_اذا } from "./Core/Statements/AlifIF.js";
+import { محلل_اذا, محلل_اواذا, محلل_والا } from "./Core/Statements/AlifIF.js";
 import { محلل_الواجهة } from "./Core/Statements/AlifUI.js";
 import { محلل_العمليات } from "./Core/Statements/AlifOperations.js";
 
@@ -46,6 +46,10 @@ export const المحللات = {
     دالة: محلل_دالة,
     اذا: محلل_اذا,
     إذا: محلل_اذا,
+    اوإذا: محلل_اواذا,
+    اواذا: محلل_اواذا,
+    والا: محلل_والا,
+    وإلا: محلل_والا,
     عملية: محلل_العمليات,
     // ===== الواجهة
     نص: محلل_الواجهة,
