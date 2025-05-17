@@ -121,9 +121,10 @@ export function تحليل_الشفرة(الشفرة) {
         }
 
         if (!متطابق) {
-            throw new Error(
-                `رمز غير معروف في السطر ${السطر}: ${الشفرة.slice(0, 10)}`
+            const error = new Error(
+                `" ${الشفرة.slice(0, 10)} " غير معروف في السطر ${السطر}`
             );
+            throw error.message;
         }
     }
 
