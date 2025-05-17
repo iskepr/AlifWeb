@@ -18,14 +18,28 @@ export function إنشاء_الشفرة(
             const كود = عقدة.جمل
                 .map((ج) => إنشاء_الشفرة(ج, مستوى, عداد, true))
                 .join("\n");
-            return `const __fragment = document.createDocumentFragment();
-                    const التصميم = document.createElement("style");
-                        التصميم.textContent = \`
-                        * {padding: 0; margin: 0; box-sizing: border-box;}
-                        \`;
-                        document.head.appendChild(التصميم);
-                    ${كود}
-                document.body.appendChild(__fragment);`;
+            return `
+            const __fragment = document.createDocumentFragment();
+            const التصميم = document.createElement("style");
+            التصميم.textContent = \`
+            * {padding: 0; margin: 0; box-sizing: border-box;}
+            \`;
+            document.head.appendChild(التصميم);
+            function مدى(البداية, النهاية, خطوة = 1) {
+                let الناتج = [];
+                if (خطوة > 0) {
+                    for (let i = البداية; i < النهاية; i += خطوة) {
+                        الناتج.push(i);
+                    }
+                } else {
+                    for (let i = البداية; i > النهاية; i += خطوة) {
+                        الناتج.push(i);
+                    }
+                }
+                return الناتج;
+            }
+            ${كود}
+            document.body.appendChild(__fragment);`;
         },
 
         متغير: (عقدة) => منشئ_متغير(مستوى, عداد, عقدة),
