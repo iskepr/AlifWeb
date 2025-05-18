@@ -14,6 +14,7 @@ import { محلل_الواجهة } from "./Core/Statements/AlifUI.js";
 import { محلل_العمليات } from "./Core/Statements/AlifOperations.js";
 import { محلل_الوقت } from "./Core/Libraries/AlifTime.js";
 import { محلل_استورد } from "./Core/Statements/AlifImport.js";
+import { محلل_الرياضيات } from "./Core/Libraries/AlifMath.js";
 
 export const المحللات = {
     اطبع: محلل_عام_للاقواس,
@@ -56,6 +57,7 @@ export const المحللات = {
 
     // ===== المكتبات =====
     الوقت: محلل_الوقت,
+    الرياضيات: محلل_الرياضيات,
 
     // ===== الواجهة =====
     نص: محلل_الواجهة,

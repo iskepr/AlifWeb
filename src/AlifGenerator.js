@@ -7,6 +7,7 @@ import { منشئ_اذا } from "./Core/Statements/AlifIF.js";
 import { منشئ_عمليات } from "./Core/Statements/AlifOperations.js";
 import { منشئ_عام_الواجهة } from "./Core/Statements/AlifUI.js";
 import { منشئ_الوقت } from "./Core/Libraries/AlifTime.js";
+import { منشئ_الرياضيات } from "./Core/Libraries/AlifMath.js";
 
 export function إنشاء_الشفرة(
     ast,
@@ -22,9 +23,7 @@ export function إنشاء_الشفرة(
             return `
             const __fragment = document.createDocumentFragment();
             const التصميم = document.createElement("style");
-            التصميم.textContent = \`
-            * {padding: 0; margin: 0; box-sizing: border-box;}
-            \`;
+            التصميم.textContent = \`* {padding: 0; margin: 0; box-sizing: border-box;}\`;
             document.head.appendChild(التصميم);
             function مدى(البداية, النهاية, خطوة = 1) {
                 let الناتج = [];
@@ -38,6 +37,18 @@ export function إنشاء_الشفرة(
                     }
                 }
                 return الناتج;
+            }
+            function المضروب(رقم) {
+                if (رقم < 0) return undefined; // المضروب مش معرف للأعداد السالبة
+                if (رقم === 0 || رقم === 1) return 1;
+                let الناتج = 1;
+                for (let i = 2; i <= رقم; i++) {
+                    الناتج *= i;
+                }
+                return الناتج;
+            }
+            function مسافة(نقطة1, نقطة2) {
+                return Math.sqrt((نقطة2[0] - نقطة1[0]) ** 2 + (نقطة2[1] - نقطة1[1]) ** 2);
             }
             async function AlifApp() {
             ${كود}
@@ -142,6 +153,7 @@ export function إنشاء_الشفرة(
 
         // المكتبات
         الوقت: (عقدة) => منشئ_الوقت(مستوى, عداد, عقدة),
+        الرياضيات: (عقدة)=> منشئ_الرياضيات(مستوى, عداد, عقدة),
 
         عملية: (عقدة) => منشئ_عمليات(عقدة, مستوى, عداد),
         قيمة: (عقدة) => {
