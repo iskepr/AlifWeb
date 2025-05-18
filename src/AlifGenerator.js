@@ -6,6 +6,7 @@ import { منشئ_دالة } from "./Core/Statements/AlifFunction.js";
 import { منشئ_اذا } from "./Core/Statements/AlifIF.js";
 import { منشئ_عمليات } from "./Core/Statements/AlifOperations.js";
 import { منشئ_عام_الواجهة } from "./Core/Statements/AlifUI.js";
+import { منشئ_الوقت } from "./Core/Libraries/AlifTime.js";
 
 export function إنشاء_الشفرة(
     ast,
@@ -38,7 +39,10 @@ export function إنشاء_الشفرة(
                 }
                 return الناتج;
             }
+            async function AlifApp() {
             ${كود}
+            }
+            AlifApp();
             document.body.appendChild(__fragment);`;
         },
 
@@ -107,7 +111,10 @@ export function إنشاء_الشفرة(
         },
 
         ارجع: (عقدة) => `return ${إنشاء_الشفرة(عقدة.قيمة, مستوى, عداد)};`,
-        استورد: (عقدة) => `import "${إنشاء_الشفرة(عقدة.قيمة, مستوى, عداد)}";`,
+        استورد: (عقدة) => {
+            if (عقدة.قيمة == null) return "";
+            return `import "${عقدة.قيمة}";`;
+        },
         احذف: (عقدة) => `${إنشاء_الشفرة(عقدة.قيمة, مستوى, عداد)} = undefined;`,
         عام: () => ``,
         استمر: () => `continue;`,
@@ -132,6 +139,9 @@ export function إنشاء_الشفرة(
                 عداد
             )} : ${إنشاء_الشفرة(عقدة.قيمة_اولى, مستوى, عداد)})`;
         },
+
+        // المكتبات
+        الوقت: (عقدة) => منشئ_الوقت(مستوى, عداد, عقدة),
 
         عملية: (عقدة) => منشئ_عمليات(عقدة, مستوى, عداد),
         قيمة: (عقدة) => {
