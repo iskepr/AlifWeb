@@ -15,6 +15,7 @@ import { محلل_العمليات } from "./Core/Statements/AlifOperations.js";
 import { محلل_الوقت } from "./Core/Libraries/AlifTime.js";
 import { محلل_استورد } from "./Core/Statements/AlifImport.js";
 import { محلل_الرياضيات } from "./Core/Libraries/AlifMath.js";
+import { محلل_حاول, محلل_خلل, محلل_نهاية } from "./Core/Statements/AlifTry.js";
 
 export const المحللات = {
     اطبع: محلل_عام_للاقواس,
@@ -54,6 +55,9 @@ export const المحللات = {
     والا: محلل_والا,
     وإلا: محلل_والا,
     عملية: محلل_العمليات,
+    حاول: محلل_حاول,
+    خلل: محلل_خلل,
+    نهاية: محلل_نهاية,
 
     // ===== المكتبات =====
     الوقت: محلل_الوقت,
