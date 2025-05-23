@@ -8,7 +8,8 @@ import { محلل_الرموز } from "../AlifParser.js";
 import { إنشاء_الشفرة } from "../AlifGenerator.js";
 import { إعادة_تعيين_المؤشر } from "../Core/TokenUtils.js";
 
-let كود_مترجم = ""; // سيتم تخزين الكود الناتج هنا
+let كود_مترجم = "";
+let خطا_المتصفح;
 
 export function تشغيل_الف(fileName) {
     const مسار_الملف = path.join(
@@ -22,7 +23,7 @@ export function تشغيل_الف(fileName) {
     let server;
     let clients = [];
 
-    const buildCode = () => {
+    const buildCode = (خطا_المتصفح) => {
         fs.readFile(مسار_الملف, "utf8", async (خطأ, شفرة) => {
             if (خطأ) {
                 console.error(`الملف "${مسار_الملف}" غير موجود`);
@@ -47,7 +48,13 @@ export function تشغيل_الف(fileName) {
             } catch (e) {
                 console.error(
                     "خطأ أثناء التوليد:",
-                    e.line ? e.message + " " + e.line : e
+                    e.line
+                        ? e.message + " " + e.line
+                        : e
+                        ? e
+                        : خطا_المتصفح.message
+                        ? خطا_المتصفح.message
+                        : ""
                 );
                 كود_مترجم = `
                 // ------------------------------- خطأ -------------------------------
@@ -93,7 +100,6 @@ export function تشغيل_الف(fileName) {
 
     const createServer = () => {
         server = http.createServer((req, res) => {
-            // Handle SSE for live reload
             if (req.url === "/events") {
                 res.writeHead(200, {
                     "Content-Type": "text/event-stream",
@@ -108,33 +114,45 @@ export function تشغيل_الف(fileName) {
                 return;
             }
 
-            // Handle static files
+            if (req.method === "POST" && req.url === "/log-error") {
+                let body = "";
+                req.on("data", (chunk) => {
+                    body += chunk;
+                });
+                req.on("end", () => {
+                    try {
+                        خطا_المتصفح = JSON.parse(body);
+                        console.log("خطأ أثناء التوليد:", خطا_المتصفح.message);
+                    } catch (err) {
+                        console.error("فشل في قراءة JSON:", err.message);
+                    }
+                    res.writeHead(204);
+                    res.end();
+                });
+                return;
+            }
+
             let filePath = path.join(
                 process.cwd(),
                 req.url === "/" ? "index.html" : req.url
             );
             const extname = path.extname(filePath);
 
-            // Default to index.html if no extension
             if (!extname) {
                 filePath = path.join(filePath, "index.html");
             }
 
-            // Check if file exists
             fs.access(filePath, fs.constants.F_OK, (err) => {
                 if (err) {
                     if (req.url === "/") {
-                        // Serve the main HTML with compiled code
                         serveMainHtml(res);
                     } else {
-                        // File not found
                         res.writeHead(404);
                         res.end("File not found");
                     }
                     return;
                 }
 
-                // Read and serve the file
                 fs.readFile(filePath, (error, content) => {
                     if (error) {
                         res.writeHead(500);
@@ -142,7 +160,6 @@ export function تشغيل_الف(fileName) {
                         return;
                     }
 
-                    // Set content type based on file extension
                     const contentType =
                         mime.lookup(filePath) || "application/octet-stream";
                     res.writeHead(200, { "Content-Type": contentType });
@@ -154,24 +171,70 @@ export function تشغيل_الف(fileName) {
         const serveMainHtml = (res) => {
             res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
             res.end(`
-            <!DOCTYPE html>
-            <html lang="ar" dir="rtl">
-            <head>
-                <meta charset="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>${اسم_المف}</title>
-            </head>
-            <body>
-                <script>
-                    ${كود_مترجم}
-                </script>
-                <script>
-                    const evtSource = new EventSource('/events');
-                    evtSource.onmessage = () => window.location.reload();
-                </script>
-            </body>
-            </html>
-        `);
+                <!DOCTYPE html>
+                <html lang="ar" dir="rtl">
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <title>${اسم_المف}</title>
+                    <script defer>
+                        console.log("🚀 Error logger script loaded");
+            
+                        function sendErrorLog(data) {
+                            fetch('/log-error', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(data)
+                            }).catch(() => {
+                                // ممكن تتجاهل لو فشل الإرسال، مش مهم
+                            });
+                        }
+            
+                        // رصد أخطاء الجافاسكريبت العادية
+                        window.addEventListener('error', function(event) {
+                            console.log('📤 Captured error event:', event.message);
+                            sendErrorLog({
+                                type: 'error',
+                                message: event.message,
+                                source: event.filename,
+                                lineno: event.lineno,
+                                colno: event.colno,
+                                stack: event.error ? event.error.stack : null
+                            });
+                        });
+            
+                        // رصد أخطاء الوعود الغير معالجة (Promises)
+                        window.addEventListener('unhandledrejection', function(event) {
+                            console.log('📤 Captured unhandled rejection:', event.reason);
+                            sendErrorLog({
+                                type: 'unhandledrejection',
+                                message: event.reason ? event.reason.message || event.reason.toString() : 'unknown',
+                                stack: event.reason ? event.reason.stack || null : null
+                            });
+                        });
+            
+                        // رصد console.error
+                        const originalConsoleError = console.error;
+                        console.error = function(...args) {
+                            sendErrorLog({
+                                type: 'console.error',
+                                message: args.map(String).join(' ')
+                            });
+                            originalConsoleError.apply(console, args);
+                        };
+                    </script>
+                </head>
+                <body>
+                    <script>
+                        ${كود_مترجم}
+                    </script>
+                    <script>
+                        const evtSource = new EventSource('/events');
+                        evtSource.onmessage = () => window.location.reload();
+                    </script>
+                </body>
+                </html>
+                `);
         };
 
         const PORT = 3000;
@@ -197,7 +260,7 @@ export function تشغيل_الف(fileName) {
             });
     };
 
-    buildCode();
+    buildCode(خطا_المتصفح);
     createServer();
 
     // متابعة التغييرات في الملف وإعادة بناء الكود
