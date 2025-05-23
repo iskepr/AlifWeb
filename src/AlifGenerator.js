@@ -2,7 +2,7 @@ import { منشئ_عام_للاقواس } from "./Core/Statements/AlifGeneral.js
 import { منشئ_متغير, منشئ_متغير_مجمع } from "./Core/Statements/AlifVariable.js";
 import { منشئ_لاجل } from "./Core/Statements/AlifFor.js";
 import { منشئ_بينما } from "./Core/Statements/AlifWhile.js";
-import { منشئ_دالة } from "./Core/Statements/AlifFunction.js";
+import { منشئ_استدعاء_دالة, منشئ_دالة } from "./Core/Statements/AlifFunction.js";
 import { منشئ_اذا } from "./Core/Statements/AlifIF.js";
 import { منشئ_عمليات } from "./Core/Statements/AlifOperations.js";
 import { منشئ_عام_الواجهة } from "./Core/Statements/AlifUI.js";
@@ -138,6 +138,7 @@ export function إنشاء_الشفرة(
         لاجل: (عقدة) => منشئ_لاجل(مستوى, عداد, عقدة, داخل_برنامج),
         بينما: (عقدة) => منشئ_بينما(مستوى, عداد, عقدة, داخل_برنامج),
         دالة: (عقدة) => منشئ_دالة(مستوى, عداد, عقدة, داخل_برنامج),
+        استدعاء_دالة: (عقدة) => منشئ_استدعاء_دالة(مستوى, عداد, عقدة, داخل_برنامج),
 
         حاول: (عقدة) => منشئ_حاول(مستوى, عداد, عقدة, داخل_برنامج),
         خلل: (عقدة) => منشئ_حاول(مستوى, عداد, عقدة, داخل_برنامج),
