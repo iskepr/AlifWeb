@@ -1,7 +1,8 @@
-import { احصل, التالي, السابق, تحقق, تطابق } from "../TokenUtils.js";
+import { التالي, السابق, تحقق, تطابق } from "../TokenUtils.js";
 import { محلل_التعبير } from "../Expressions.js";
 import { إدارة_المسافة_البادئة } from "../Indentation.js";
 import { إنشاء_الشفرة } from "../../AlifGenerator.js";
+import { رمي_خطأ } from "../AlifErrors.js";
 
 export function محلل_اذا(الرموز) {
     if (!الرموز || !Array.isArray(الرموز)) {
@@ -31,11 +32,8 @@ export function محلل_اذا(الرموز) {
     let اوامر_اذا = [];
     while (!تحقق(الرموز, "نقطتان")) {
         const القيمة = محلل_التعبير(الرموز);
-        if (!القيمة) {
-            const error = new Error(`لا يوجد شرط صحيح في if`);
-            error.line = `في السطر ` + احصل(الرموز).السطر;
-            throw error;
-        }
+        if (!القيمة) رمي_خطأ(`لا يوجد شرط صحيح في اذا`, الرموز);
+
         شروط_اذا.push(القيمة);
         if (تحقق(الرموز, "كلمة", "والا")) break;
     }
@@ -77,11 +75,8 @@ export function محلل_اواذا(الرموز) {
     // الشروط
     while (true) {
         const القيمة = محلل_التعبير(الرموز);
-        if (!القيمة) {
-            const error = new Error(`لا يوجد شرط صحيح في اوإذا`);
-            error.line = `في السطر ` + احصل(الرموز).السطر;
-            throw error;
-        }
+        if (!القيمة) رمي_خطأ(`لا يوجد شرط صحيح في اوإذا`, الرموز);
+
         شروط_اواذا.push(القيمة);
         if (تطابق(الرموز, "نقطتان")) break;
     }
