@@ -2,7 +2,10 @@ import { منشئ_عام_للاقواس } from "./Core/Statements/AlifGeneral.js
 import { منشئ_متغير, منشئ_متغير_مجمع } from "./Core/Statements/AlifVariable.js";
 import { منشئ_لاجل } from "./Core/Statements/AlifFor.js";
 import { منشئ_بينما } from "./Core/Statements/AlifWhile.js";
-import { منشئ_استدعاء_دالة, منشئ_دالة } from "./Core/Statements/AlifFunction.js";
+import {
+    منشئ_استدعاء_دالة,
+    منشئ_دالة,
+} from "./Core/Statements/AlifFunction.js";
 import { منشئ_اذا } from "./Core/Statements/AlifIF.js";
 import { منشئ_عمليات } from "./Core/Statements/AlifOperations.js";
 import { منشئ_عام_الواجهة } from "./Core/Statements/AlifUI.js";
@@ -66,7 +69,41 @@ export function إنشاء_الشفرة(
         طول: منشئ_عام_للاقواس(مستوى, عداد, "Object.keys", { اضافة: ".length" }),
         اقصى: منشئ_عام_للاقواس(مستوى, عداد, "Math.max", { عداد_مصوفة: true }),
         ادنى: منشئ_عام_للاقواس(مستوى, عداد, "Math.min", { عداد_مصوفة: true }),
-        اشعار: منشئ_عام_للاقواس(مستوى, عداد, "alert"),
+        اشعار: (عقدة) => {
+            const عنوان = عقدة.قيم.find((e) => e["المفتاح"] === "العنوان")?.[
+                "القيمة"
+            ].قيمة;
+            const محتوى = عقدة.قيم.find((e) => e["المفتاح"] === "المحتوى")?.[
+                "القيمة"
+            ].قيمة;
+            const شعار = عقدة.قيم.find((e) => e["المفتاح"] === "الشعار")?.[
+                "القيمة"
+            ].قيمة;
+            const أمر_عند_الضغط = عقدة.قيم.find(
+                (e) => e["المفتاح"] === "عند_الضغط"
+            )?.["القيمة"].قيمة;
+            return `
+            if ("Notification" in window) {
+              Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                  const notification = new Notification(
+                    ${عنوان}, {
+                    body: ${محتوى},
+                    icon: ${شعار}
+                  });
+                  notification.onclick = function () {
+                    // هنا تحط الأمر اللي عايز تنفذه
+                    ${أمر_عند_الضغط.replaceAll('"', "")}
+                  };
+                } else {
+                  console.error("المستخدم رفض الإشعارات");
+                }
+              });
+            } else {
+              console.error("المتصفح لا يدعم الإشعارات");
+            }
+            `;
+        },
         صحيح: منشئ_عام_للاقواس(مستوى, عداد, "parseInt"),
         عشري: (عقدة) => {
             const vals = عقدة.قيم.map((v) => إنشاء_الشفرة(v, مستوى, عداد));
@@ -138,7 +175,8 @@ export function إنشاء_الشفرة(
         لاجل: (عقدة) => منشئ_لاجل(مستوى, عداد, عقدة, داخل_برنامج),
         بينما: (عقدة) => منشئ_بينما(مستوى, عداد, عقدة, داخل_برنامج),
         دالة: (عقدة) => منشئ_دالة(مستوى, عداد, عقدة, داخل_برنامج),
-        استدعاء_دالة: (عقدة) => منشئ_استدعاء_دالة(مستوى, عداد, عقدة, داخل_برنامج),
+        استدعاء_دالة: (عقدة) =>
+            منشئ_استدعاء_دالة(مستوى, عداد, عقدة, داخل_برنامج),
 
         حاول: (عقدة) => منشئ_حاول(مستوى, عداد, عقدة, داخل_برنامج),
         خلل: (عقدة) => منشئ_حاول(مستوى, عداد, عقدة, داخل_برنامج),
