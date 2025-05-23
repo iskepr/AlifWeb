@@ -1,6 +1,7 @@
 import fs from "fs";
 import http from "http";
 import path from "path";
+import mime from "mime-types";
 
 import { تحليل_الشفرة } from "../AlifLexer.js";
 import { محلل_الرموز } from "../AlifParser.js";
@@ -92,6 +93,7 @@ export function تشغيل_الف(fileName) {
 
     const createServer = () => {
         server = http.createServer((req, res) => {
+            // Handle SSE for live reload
             if (req.url === "/events") {
                 res.writeHead(200, {
                     "Content-Type": "text/event-stream",
@@ -105,27 +107,72 @@ export function تشغيل_الف(fileName) {
                 });
                 return;
             }
-            res.writeHead(200, { "Content-Type": "text/html" });
+
+            // Handle static files
+            let filePath = path.join(
+                process.cwd(),
+                req.url === "/" ? "index.html" : req.url
+            );
+            const extname = path.extname(filePath);
+
+            // Default to index.html if no extension
+            if (!extname) {
+                filePath = path.join(filePath, "index.html");
+            }
+
+            // Check if file exists
+            fs.access(filePath, fs.constants.F_OK, (err) => {
+                if (err) {
+                    if (req.url === "/") {
+                        // Serve the main HTML with compiled code
+                        serveMainHtml(res);
+                    } else {
+                        // File not found
+                        res.writeHead(404);
+                        res.end("File not found");
+                    }
+                    return;
+                }
+
+                // Read and serve the file
+                fs.readFile(filePath, (error, content) => {
+                    if (error) {
+                        res.writeHead(500);
+                        res.end("Error loading the file");
+                        return;
+                    }
+
+                    // Set content type based on file extension
+                    const contentType =
+                        mime.lookup(filePath) || "application/octet-stream";
+                    res.writeHead(200, { "Content-Type": contentType });
+                    res.end(content, "utf-8");
+                });
+            });
+        });
+
+        const serveMainHtml = (res) => {
+            res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
             res.end(`
-              <!DOCTYPE html>
-              <html lang="ar">
-              <head>
+            <!DOCTYPE html>
+            <html lang="ar" dir="rtl">
+            <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>${اسم_المف}</title>
-              </head>
-              <body>
+            </head>
+            <body>
                 <script>
-                  ${كود_مترجم}
+                    ${كود_مترجم}
                 </script>
                 <script>
-                  const evtSource = new EventSource('/events');
-                  evtSource.onmessage = () => window.location.reload();
+                    const evtSource = new EventSource('/events');
+                    evtSource.onmessage = () => window.location.reload();
                 </script>
-              </body>
-              </html>
-            `);
-        });
+            </body>
+            </html>
+        `);
+        };
 
         const PORT = 3000;
         server
@@ -146,7 +193,6 @@ export function تشغيل_الف(fileName) {
                             );
                         });
                     });
-                    process.exit(1);
                 }
             });
     };

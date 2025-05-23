@@ -41,6 +41,7 @@
   "homepage": "https://github.com/iskepr/AlifWeb#readme",
   "dependencies": {
     "esbuild": "^0.25.2",
+    "mime-types": "^3.0.1",
     "pkg": "^5.8.1",
     "terser": "^5.39.0"
   }
