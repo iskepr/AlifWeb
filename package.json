@@ -1,48 +1,48 @@
 {
-  "name": "alifweb",
-  "version": "1.0.0",
-  "description": "An Arabic programming language for the web",
-  "keywords": [
-    "alifweb",
-    "alif",
-    "arabic"
-  ],
-  "license": "ISC",
-  "author": "Skepr",
-  "type": "module",
-  "main": "alifweb",
-  "scripts": {
-    "start": "node alifweb"
-  },
-  "bin": {
-    "alifweb": "alifweb"
-  },
-  "pkg": {
-    "scripts": [
-      "alifweb"
+    "name": "alifweb",
+    "version": "0.1.0",
+    "description": "An Arabic programming language for the web",
+    "keywords": [
+        "alifweb",
+        "alif",
+        "arabic"
     ],
-    "targets": [
-      "node18-linux-x64",
-      "node18-win-x64",
-      "node18-macos-x64"
-    ],
-    "outputPath": "dist"
-  },
-  "devDependencies": {
-    "@types/node": "^22.14.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/iskepr/AlifWeb.git"
-  },
-  "bugs": {
-    "url": "https://github.com/iskepr/AlifWeb/issues"
-  },
-  "homepage": "https://github.com/iskepr/AlifWeb#readme",
-  "dependencies": {
-    "esbuild": "^0.25.2",
-    "mime-types": "^3.0.1",
-    "pkg": "^5.8.1",
-    "terser": "^5.39.0"
-  }
+    "license": "ISC",
+    "author": "Skepr",
+    "type": "module",
+    "main": "alifweb",
+    "scripts": {
+        "start": "node alifweb"
+    },
+    "bin": {
+        "alifweb": "alifweb"
+    },
+    "pkg": {
+        "scripts": [
+            "alifweb"
+        ],
+        "targets": [
+            "node18-linux-x64",
+            "node18-win-x64",
+            "node18-macos-x64"
+        ],
+        "outputPath": "dist"
+    },
+    "devDependencies": {
+        "@types/node": "^22.14.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/iskepr/AlifWeb.git"
+    },
+    "bugs": {
+        "url": "https://github.com/iskepr/AlifWeb/issues"
+    },
+    "homepage": "https://github.com/iskepr/AlifWeb#readme",
+    "dependencies": {
+        "esbuild": "^0.25.2",
+        "mime-types": "^3.0.1",
+        "pkg": "^5.8.1",
+        "terser": "^5.39.0"
+    }
 }
