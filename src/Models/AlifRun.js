@@ -177,9 +177,7 @@ export function تشغيل_الف(fileName) {
                     <meta charset="UTF-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                     <title>${اسم_المف}</title>
-                    <script defer>
-                        console.log("🚀 Error logger script loaded");
-            
+                    <script defer>            
                         function sendErrorLog(data) {
                             fetch('/log-error', {
                                 method: 'POST',
@@ -192,7 +190,7 @@ export function تشغيل_الف(fileName) {
             
                         // رصد أخطاء الجافاسكريبت العادية
                         window.addEventListener('error', function(event) {
-                            console.log('📤 Captured error event:', event.message);
+                            console.log('Captured error event:', event.message);
                             sendErrorLog({
                                 type: 'error',
                                 message: event.message,
@@ -205,7 +203,7 @@ export function تشغيل_الف(fileName) {
             
                         // رصد أخطاء الوعود الغير معالجة (Promises)
                         window.addEventListener('unhandledrejection', function(event) {
-                            console.log('📤 Captured unhandled rejection:', event.reason);
+                            console.log('Captured unhandled rejection:', event.reason);
                             sendErrorLog({
                                 type: 'unhandledrejection',
                                 message: event.reason ? event.reason.message || event.reason.toString() : 'unknown',
