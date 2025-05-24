@@ -303,7 +303,7 @@ export function تشغيل_الف(fileName) {
 
     // لو التطبيق قفل، نقفل السيرفر وننهي كل الـ clients
     process.on("SIGINT", () => {
-        console.log("\nجارٍ إيقاف السيرفر...");
+        console.log("\nجاريٍ إيقاف السيرفر...");
 
         clients.forEach((client) => client.end()); // نقفل كل الاتصالات
         if (server)

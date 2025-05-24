@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo " ---------- بناء لغة الف للويب ---------- "
+echo " ---------- جاري تحويل المشروع الى ملف cjs ---------- "
+npx esbuild alifweb --bundle --platform=node --format=cjs --target=node18 --outfile=alifweb.cjs 
+echo " ---------- جاري بناء ملفات ---------- "
+npx pkg alifweb.cjs --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --output build/alifweb
+
+rm alifweb.cjs
+echo " ---------- اكتمل البناء ---------- "

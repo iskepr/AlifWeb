@@ -1,20 +1,13 @@
 #!/usr/bin/env node
 import { تشغيل_الف } from "./src/Models/AlifRun.js";
 import { بناء_الف } from "./src/Models/AlifBuild.js";
-import fs from "fs";
-import path from "path";
 
 // المدخلات في الطرفية
 const command = process.argv[2];
 const fileName = process.argv[3];
 
 if (["-v", "ص", "اصدار"].includes(command)) {
-    const __filename = new URL(import.meta.url).pathname;
-    const __dirname = path.dirname(__filename);
-    const packageJson = JSON.parse(
-        fs.readFileSync(path.join(__dirname, "package.json"), "utf8")
-    );
-    console.log(`${packageJson.version} اصدار لغة الف للويب`);
+    console.log(`0.1.0 اصدار لغة الف للويب`);
 } else if (["-h", "م", "مساعدة"].includes(command)) {
     console.log(`
     -v, ص, اصدار: اصدار اللغة.
