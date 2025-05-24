@@ -283,27 +283,6 @@ export function إنشاء_الشفرة(
                 "div",
                 "margin: 10px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;"
             ),
-        رأسي: (عقدة) =>
-            منشئ_عام_الواجهة(
-                عقدة,
-                عداد,
-                "div",
-                "display:flex; flex-direction:row;"
-            ),
-        توسيط: (عقدة) =>
-            منشئ_عام_الواجهة(
-                عقدة,
-                عداد,
-                "div",
-                "display:flex; align-items: center; justify-content: center;"
-            ),
-        بطاقة: (عقدة) =>
-            منشئ_عام_الواجهة(
-                عقدة,
-                عداد,
-                "div",
-                "margin: 10px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;"
-            ),
     };
 
     // التعامل مع المسافات و الاسطر الفارغة
