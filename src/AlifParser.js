@@ -17,6 +17,7 @@ import { محلل_الوقت } from "./Core/Libraries/AlifTime.js";
 import { محلل_استورد } from "./Core/Statements/AlifImport.js";
 import { محلل_الرياضيات } from "./Core/Libraries/AlifMath.js";
 import { محلل_حاول, محلل_خلل, محلل_نهاية } from "./Core/Statements/AlifTry.js";
+import { محلل_صنف } from "./Core/Statements/AlifClass.js";
 
 export const المحللات = {
     اطبع: محلل_عام_للاقواس,
@@ -43,6 +44,7 @@ export const المحللات = {
     خطا: محلل_عام_للكلمات,
     خطأ: محلل_عام_للكلمات,
     عدم: محلل_عام_للكلمات,
+    هذا: محلل_عام_للكلمات,
     لاجل: محلل_لاجل,
     لأجل: محلل_لاجل,
     بينما: محلل_بينما,
@@ -58,6 +60,7 @@ export const المحللات = {
     حاول: محلل_حاول,
     خلل: محلل_خلل,
     نهاية: محلل_نهاية,
+    صنف: محلل_صنف,
 
     // ===== المكتبات =====
     الوقت: محلل_الوقت,

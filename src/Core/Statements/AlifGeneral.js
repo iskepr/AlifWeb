@@ -1,6 +1,7 @@
 import { التالي, تحقق, تطابق } from "../TokenUtils.js";
 import { محلل_التعبير } from "../Expressions.js";
 import { إنشاء_الشفرة } from "../../AlifGenerator.js";
+import { رمي_خطأ } from "../AlifErrors.js";
 
 export function محلل_عام_للاقواس(الرموز, الكلمة) {
     if (!الرموز || !Array.isArray(الرموز)) {

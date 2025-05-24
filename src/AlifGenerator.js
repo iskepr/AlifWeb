@@ -12,6 +12,7 @@ import { منشئ_عام_الواجهة } from "./Core/Statements/AlifUI.js";
 import { منشئ_الوقت } from "./Core/Libraries/AlifTime.js";
 import { منشئ_الرياضيات } from "./Core/Libraries/AlifMath.js";
 import { منشئ_حاول } from "./Core/Statements/AlifTry.js";
+import { منشئ_صنف } from "./Core/Statements/AlifClass.js";
 
 export function إنشاء_الشفرة(
     ast,
@@ -172,6 +173,7 @@ export function إنشاء_الشفرة(
         خطأ: () => `false`,
         خطا: () => `false`,
         عدم: () => `null`,
+        هذا: () => `this`,
 
         لاجل: (عقدة) => منشئ_لاجل(مستوى, عداد, عقدة, داخل_برنامج),
         بينما: (عقدة) => منشئ_بينما(مستوى, عداد, عقدة, داخل_برنامج),
@@ -195,6 +197,8 @@ export function إنشاء_الشفرة(
                 عداد
             )} : ${إنشاء_الشفرة(عقدة.قيمة_ثانية, مستوى, عداد)})`;
         },
+
+        صنف: (عقدة) => منشئ_صنف(مستوى, عداد, عقدة, داخل_برنامج),
 
         // المكتبات
         الوقت: (عقدة) => منشئ_الوقت(مستوى, عداد, عقدة),
