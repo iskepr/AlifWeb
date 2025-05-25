@@ -3,8 +3,7 @@ import { إدارة_المسافة_البادئة } from "../Indentation.js";
 import { إنشاء_الشفرة } from "../../AlifGenerator.js";
 import { محلل_الجملة } from "../../AlifParser.js";
 import { رمي_خطأ } from "../AlifErrors.js";
-
-let ذاكرة_الدوال = [];
+import { ذاكرة_الدوال } from "./AlifFunction.js";
 
 export function محلل_صنف(الرموز) {
     تطابق(الرموز, "كلمة", "صنف");

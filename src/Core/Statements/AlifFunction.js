@@ -4,7 +4,7 @@ import { إنشاء_الشفرة } from "../../AlifGenerator.js";
 import { محلل_الجملة } from "../../AlifParser.js";
 import { رمي_خطأ } from "../AlifErrors.js";
 
-let ذاكرة_الدوال = [];
+export let ذاكرة_الدوال = [];
 
 export function محلل_دالة(الرموز) {
     تطابق(الرموز, "كلمة", "دالة");
