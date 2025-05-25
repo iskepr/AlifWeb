@@ -2,9 +2,14 @@
 import { تشغيل_الف } from "./src/Models/AlifRun.js";
 import { بناء_الف } from "./src/Models/AlifBuild.js";
 
+import { pubLib } from "./AlifLib.js";
+import { getLib } from "./AlifLib.js";
+import { updateLib } from "./AlifLib.js";
+import { alifUpdate } from "./AlifLib.js";
+
 // المدخلات في الطرفية
 const command = process.argv[2];
-const fileName = process.argv[3];
+export const fileName = process.argv[3];
 
 if (["-v", "ص", "اصدار"].includes(command)) {
     console.log(`0.1.0 اصدار لغة الف للويب`);
@@ -20,6 +25,17 @@ if (["-v", "ص", "اصدار"].includes(command)) {
         بناء_الف(fileName);
     } else {
         بناء_الف();
+    }
+} else if (["pub", "publish", "نشر"].includes(command)) {
+    pubLib();
+} else if (["get", "install", "i", "تحميل"].includes(command)) {
+    getLib();
+} else if (["update", "تحديث"].includes(command)) {
+    if (fileName) {
+        updateLib();
+    } else {
+        alifUpdate(false);
+        alifUpdate(true);
     }
 } else {
     if (command && (command.endsWith(".alif") || command.endsWith(".الف"))) {
