@@ -177,6 +177,7 @@ export function تشغيل_الف(fileName) {
                     <meta charset="UTF-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                     <title>${اسم_المف}</title>
+                    <div id="root"></div>
                     <script defer>            
                         function sendErrorLog(data) {
                             // ------------------------------- خطأ -------------------------------
@@ -257,10 +258,10 @@ export function تشغيل_الف(fileName) {
                     </script>
                 </head>
                 <body>
-                    <script>
+                    <script defer>
                         ${كود_مترجم}
                     </script>
-                    <script>
+                    <script defer>
                         const evtSource = new EventSource('/events');
                         evtSource.onmessage = () => window.location.reload();
                     </script>

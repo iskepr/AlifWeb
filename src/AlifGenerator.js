@@ -26,7 +26,7 @@ export function إنشاء_الشفرة(
                 .map((ج) => إنشاء_الشفرة(ج, مستوى, عداد, true))
                 .join("\n");
             return `
-            const __fragment = document.createDocumentFragment();
+            const __fragment = document.getElementById("root");
             const التصميم = document.createElement("style");
             التصميم.textContent = \`* {padding: 0; margin: 0; box-sizing: border-box;}\`;
             document.head.appendChild(التصميم);
@@ -58,8 +58,7 @@ export function إنشاء_الشفرة(
             async function AlifApp() {
             ${كود}
             }
-            AlifApp();
-            document.body.appendChild(__fragment);`;
+            AlifApp();`;
         },
 
         متغير: (عقدة) => منشئ_متغير(مستوى, عداد, عقدة),

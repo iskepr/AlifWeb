@@ -1,0 +1,211 @@
+:root {
+    --primary-color: #771eff;
+    --success-color: #771eff;
+    --error-color: #f44336;
+    --bg-color: #08051b;
+    --text-color: #fff;
+    --border-color: #ddd;
+    --code-bg: #f8f9fa;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Tajawal", Arial, sans-serif;
+    margin: 0 auto;
+    padding: 20px;
+    direction: rtl;
+    max-height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+a {
+    color: gray;
+    text-decoration: none;
+}
+
+.container {
+    background: var(--bg-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    padding-bottom: 0px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.testAlif {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 60vh;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.editorContainer {
+    margin-bottom: 2rem;
+    margin: 10px;
+    width: 100%;
+}
+
+.editorHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: #444;
+}
+
+#code {
+    width: 100%;
+    height: 90%;
+    font-family: "Cascadia Code", "Courier New", monospace;
+    resize: vertical;
+    line-height: 1.5;
+    color: var(--text-color);
+    background-color: transparent;
+    transition: border-color 0.3s;
+    position: relative;
+    display: flex;
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px 0;
+    border: 2px solid #182d5555;
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 2px 2px 1px #2079ff;
+}
+
+#code:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
+
+.runButton {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.runButton:hover {
+    background-color: #5b3398;
+}
+
+.runButton:active {
+    transform: translateY(1px);
+}
+
+.runButton .icon {
+    font-size: 14px;
+}
+
+#root {
+    max-height: 250px;
+    overflow: scroll;
+}
+
+#output {
+    margin-top: 1rem;
+    border-radius: 6px;
+    min-height: 100px;
+    padding: 0;
+    overflow: auto;
+    transition: all 0.3s;
+}
+
+.outputContainer {
+    position: relative;
+    overflow: scroll;
+    max-height: 95%;
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px 0;
+    border: 2px solid #182d5555;
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 2px 2px 1px #2079ff;
+    margin: 10px;
+    width: 100%;
+}
+
+.output-content {
+    font-family: "Cascadia Code", "Courier New", monospace;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: auto;
+}
+
+.output-code {
+    width: 100%;
+}
+
+.placeholder {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    padding: 1.5rem;
+    margin: 0;
+}
+
+.success {
+    border-left: 4px solid var(--success-color);
+}
+
+.error {
+    border-left: 4px solid var(--error-color);
+}
+
+footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .testAlif {
+        flex-direction: column;
+    }
+    .container {
+        padding: 1rem;
+    }
+
+    #code {
+        height: 200px;
+    }
+}

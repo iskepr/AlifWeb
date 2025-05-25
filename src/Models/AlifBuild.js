@@ -65,9 +65,10 @@ export async function بناء_الف(fileName) {
     <meta name="description" content="" />
     <meta name="keywords" content="alif,aliflang,alifweb,الف, الف ويب" />
     <title>${اسم_المف}</title>
+    <div id="root"></div>
 </head>
 <body>
-    <script src="${اسم_المف}.alif.js"></script>
+    <script src="${اسم_المف}.alif.js" defer></script>
 </body>
 </html>
 `;
