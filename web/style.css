@@ -197,6 +197,133 @@ footer {
     font-size: 0.9rem;
 }
 
+/* CodeMirror styles */
+.cm-s-monokai.CodeMirror {
+    border: none;
+    direction: rtl;
+    font-family: "Tajawal", "Droid Arabic Kufi", "Droid Sans", sans-serif;
+    font-size: 16px;
+    height: 100%;
+    color: var(--text-color);
+    background-color: transparent;
+    transition: border-color 0.3s;
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px 0;
+    border: 2px solid #182d5555;
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 2px 2px 1px #2079ff;
+}
+
+.CodeMirror-gutters {
+    background: #272822;
+    border-right: 1px solid #555;
+}
+
+.CodeMirror-linenumber {
+    color: #acb6bf8c;
+    padding-right: 5px;
+    border-right: 1px solid #acb6bf8c;
+}
+
+/* Custom Alif language specific */
+.cm-s-monokai span.cm-keyword,
+.cm-s-monokai .cm-alif-keyword {
+    color: #ff8f40;
+}
+.cm-s-monokai .cm-alif-builtin {
+    color: #66d9ef;
+}
+.cm-s-monokai .cm-alif-boolean {
+    color: #d2a6ff;
+}
+.cm-s-monokai .cm-alif-function {
+    color: #ffb454;
+}
+.cm-s-monokai span.cm-string {
+    color: #aad94c;
+}
+.cm-s-monokai span.cm-comment {
+    font-style: italic;
+    color: #acb6bf8c;
+}
+
+.cm-s-monokai span.cm-operator {
+    color: #ff8f40;
+}
+
+.cm-s-monokai .CodeMirror-gutters,
+.cm-s-monokai.CodeMirror,
+.CodeMirror {
+    font-family: "Tajawal", "Droid Arabic Kufi", "Droid Sans", sans-serif;
+    font-size: 16px;
+    height: 100%;
+    text-align: right;
+    direction: rtl;
+    background: transparent;
+}
+
+.CodeMirror-scroll {
+    min-height: 300px;
+}
+
+.CodeMirror-lines {
+    padding: 10px 0;
+}
+
+/* Custom hint styling */
+.CodeMirror-hints {
+    font-family: "Cairo", sans-serif;
+    border: 1px solid #4a4a4a;
+    background: #2a2a2a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-height: 20em;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.CodeMirror-hint {
+    padding: 8px 12px;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.CodeMirror-hint:hover {
+    background: #3a3a3a;
+}
+
+.CodeMirror-hint-active {
+    background: #3a3a3a;
+}
+
+.hint-name {
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.hint-doc {
+    color: #888;
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+}
+
+.hint-type {
+    color: #4fc3f7;
+    font-size: 0.8em;
+    background: rgba(79, 195, 247, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
 @media (max-width: 768px) {
     .testAlif {
         flex-direction: column;

@@ -6,10 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="مترجم لغة ألف على الويب">
     <title>مترجم لغة ألف - AlifWeb</title>
-    <link rel="stylesheet" href="web/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.css">
+    <link rel="stylesheet" href="web/style.css">
 </head>
 
 <body>
@@ -29,7 +33,7 @@
                         <span class="icon">▶</span>
                     </button>
                 </div>
-                <textarea id="code" placeholder="اكتب كود لغة ألف هنا..." spellcheck="false" autofocus></textarea>
+                <div id="editor"></div>
             </div>
 
             <div class="outputContainer">
@@ -48,6 +52,15 @@
         </footer>
     </div>
 
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/clike/clike.min.js"></script>
+    <!-- Alif Language Mode -->
+    <script src="web/mode/alif/alif.js"></script>
+    <script src="web/editor.js" type="module">
+    </script>
     <script src="web/script.js" type="module"></script>
 </body>
 

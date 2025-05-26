@@ -3,7 +3,7 @@ import { محلل_الرموز } from "../src/AlifParser.js";
 import { إنشاء_الشفرة } from "../src/AlifGenerator.js";
 import { إعادة_تعيين_المؤشر } from "../src/Core/TokenUtils.js";
 
-const محرر_النص = document.getElementById("code");
+const editor = window.editor;
 const زر_التشغيل = document.getElementById("run");
 const الناتج = document.getElementById("output");
 
@@ -13,9 +13,9 @@ async function تشغيل_الكود() {
     try {
         إعادة_تعيين_المؤشر();
 
-        const شفرة = محرر_النص.value;
+        const شفرة = editor.getValue();
 
-        if (!شفرة.trim()) {
+        if (!شفرة.trim() || شفرة === "اكتب كود لغة ألف هنا...") {
             عرض_النتيجة("الرجاء إدخال كود للتنفيذ", "error");
             return;
         }
