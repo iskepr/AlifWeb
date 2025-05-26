@@ -72,13 +72,12 @@ async function تشغيل_الكود() {
             });
             الناتج.className = "output-code success";
         } catch (خطأ_التنفيذ) {
-            await عرض_النتيجة(
-                `خطأ أثناء التنفيذ: ${خطأ_التنفيذ.message}`,
-                "error"
-            );
+            await عرض_النتيجة(`خطأ أثناء التنفيذ: ${خطأ_التنفيذ}`, "error");
         }
     } catch (خطأ) {
-        await عرض_النتيجة(`حدث خطأ: ${خطأ.message}`, "error");
+        console.log(خطأ);
+
+        await عرض_النتيجة(`${خطأ.line}: ${خطأ.message}`, "error");
     }
 }
 
