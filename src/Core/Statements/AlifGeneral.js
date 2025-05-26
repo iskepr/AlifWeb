@@ -88,9 +88,7 @@ export function منشئ_عام_للاقواس(
         const filtered = vals.filter((v) => v !== "0");
         let القيمة;
         if (عداد_مصوفة) {
-            القيمة = filtered
-                .map((v) => (!isNaN(Number(v)) ? v : `...${v}`))
-                .join(", ");
+            القيمة = filtered.map((v) => v).join(", ");
         } else {
             القيمة = filtered.join(", ");
         }

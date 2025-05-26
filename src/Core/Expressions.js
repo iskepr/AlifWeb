@@ -1,4 +1,4 @@
-import { احصل, التالي, السابق, تحقق, تطابق } from "./TokenUtils.js";
+import { احصل, التالي, السابق, المؤشر, تحقق, تطابق } from "./TokenUtils.js";
 import { المحللات } from "../AlifParser.js";
 import { محلل_العمليات } from "./Statements/AlifOperations.js";
 import { محلل_عام_للاقواس_يسبقها_نقطة } from "./Statements/AlifGeneral.js";
@@ -59,6 +59,7 @@ export function محلل_التعبير(الرموز) {
             return { نوع: "معرف_صنف", أسماء_صنف: [المعرف, الكلمة] };
         } else {
             السابق(الرموز);
+            const البداية = المؤشر;
             const identToken = تطابق(الرموز, "معرف");
             let node = { نوع: "معرف", اسم: identToken.القيمة, رمز: identToken };
             // دعم س[5]
@@ -72,10 +73,10 @@ export function محلل_التعبير(الرموز) {
                 node = { نوع: "فهرس_عنصر", list: node, index: indexExpr };
 
                 if (تحقق(الرموز, "رمز_حسابي")) {
-                    السابق(الرموز);
-                    السابق(الرموز);
-                    السابق(الرموز);
-                    السابق(الرموز);
+                    const الحالي = المؤشر;
+                    for (let i = 0; i < الحالي - البداية; i++) {
+                        السابق(الرموز);
+                    }
                     return محلل_العمليات(الرموز);
                 }
             }
