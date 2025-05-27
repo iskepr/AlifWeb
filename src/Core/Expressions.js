@@ -1,5 +1,13 @@
-import { احصل, التالي, السابق, المؤشر, تحقق, تطابق } from "./TokenUtils.js";
-import { المحللات } from "../AlifParser.js";
+import {
+    إعادة_تعيين_المؤشر,
+    احصل,
+    التالي,
+    السابق,
+    المؤشر,
+    تحقق,
+    تطابق,
+} from "./TokenUtils.js";
+import { المحللات, محلل_الجملة } from "../AlifParser.js";
 import { محلل_العمليات } from "./Statements/AlifOperations.js";
 import { محلل_عام_للاقواس_يسبقها_نقطة } from "./Statements/AlifGeneral.js";
 import { محلل_إستدعاء_دالة } from "./Statements/AlifFunction.js";
