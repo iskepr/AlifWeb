@@ -44,7 +44,7 @@ export function إنشاء_الشفرة(
                 return الناتج;
             }
             function المضروب(رقم) {
-                if (رقم < 0) return undefined; // المضروب مش معرف للأعداد السالبة
+                if (رقم < 0) return undefined;
                 if (رقم === 0 || رقم === 1) return 1;
                 let الناتج = 1;
                 for (let i = 2; i <= رقم; i++) {
