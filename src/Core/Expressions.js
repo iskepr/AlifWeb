@@ -7,6 +7,8 @@ import { رمي_خطأ } from "./AlifErrors.js";
 import { محلل_المصفوفة } from "./Statements/AlifList.js";
 import { محلل_الفهرس } from "./Statements/AlifObject.js";
 import { محلل_مترابطة } from "./Statements/AlifTuple.js";
+import { تحليل_الشفرة } from "../AlifLexer.js";
+import { إنشاء_الشفرة } from "../AlifGenerator.js";
 
 export function محلل_التعبير(الرموز) {
     if (!الرموز || !Array.isArray(الرموز)) {
@@ -94,10 +96,25 @@ export function محلل_التعبير(الرموز) {
         } else {
             السابق(الرموز);
             let القيمة = احصل(الرموز)?.القيمة;
+            // التعامل مع القيم داخل النص المنسق م" {} "
             if (القيمة.startsWith('م"')) {
                 const النص = القيمة;
                 const محتوى = النص.slice(2, -1);
-                const بعد_التحويل = محتوى.replace(/{([^}]+)}/g, "${$1}");
+                const بعد_التحويل = محتوى.replace(
+                    /{([^}]+)}/g,
+                    (match, الشفرة) => {
+                        const رموز = تحليل_الشفرة(الشفرة);
+
+                        const الحالي = المؤشر;
+                        إعادة_تعيين_المؤشر();
+
+                        const ast = محلل_الجملة(رموز);
+                        for (let i = 0; i < الحالي - رموز.length; i++) {
+                            التالي(الرموز);
+                        }
+                        return "${" + إنشاء_الشفرة(ast) + "}";
+                    }
+                );
                 القيمة = "`" + بعد_التحويل + "`";
             }
             const token = التالي(الرموز);
