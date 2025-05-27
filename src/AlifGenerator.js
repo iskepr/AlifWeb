@@ -309,6 +309,11 @@ export function إنشاء_الشفرة(
         return " ";
     }
 
+    if (ast.نوع === "غير_معروف" && ast.رمز) {
+        if (ast.رمز.النوع === "سطر_جديد") return "\n";
+        if (ast.رمز.النوع === "مسافة") return " ";
+    }
+
     const مولد = مولدات[ast.نوع];
     if (!مولد) {
         const error = new Error(
