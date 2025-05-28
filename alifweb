@@ -7,7 +7,6 @@ import { getLib } from "./AlifLib.js";
 import { updateLib } from "./AlifLib.js";
 import { alifUpdate } from "./AlifLib.js";
 
-import { إعادة_تعيين_المؤشر } from "./src/Core/TokenUtils.js";
 import { تحليل_الشفرة } from "./src/AlifLexer.js";
 import { محلل_الرموز } from "./src/AlifParser.js";
 import { إنشاء_الشفرة } from "./src/AlifGenerator.js";
@@ -21,7 +20,6 @@ let شفرة_مترجمة;
 // المدخلات في الطرفية
 const command = process.argv[2];
 export const fileName = process.argv[3];
-const اضافي = process.argv[4];
 
 if (["-v", "ص", "اصدار"].includes(command)) {
     console.log(`0.1.0 اصدار لغة الف للويب`);
@@ -58,23 +56,22 @@ if (["-v", "ص", "اصدار"].includes(command)) {
         alifUpdate(true);
     }
 } else if (["local", "محلي"].includes(command)) {
-    const مسار_الملف = path.join(process.cwd(), اضافي ? اضافي : "./رئيسي.الف");
+    function وسع_المسار(مسار) {
+        if (!مسار) return null;
+        if (مسار.startsWith("~"))
+            return path.join(process.env.HOME, مسار.slice(1));
+        return مسار;
+    }
+    const مسار_الملف = path.resolve(وسع_المسار(fileName || "./رئيسي.الف"));
     fs.readFile(مسار_الملف, "utf8", async (خطأ, شفرة) => {
         if (خطأ) {
             console.error(`الملف "${مسار_الملف}" غير موجود`);
             process.exit();
         }
         try {
-            إعادة_تعيين_المؤشر();
-            const رموز = تحليل_الشفرة(شفرة);
-            const ast = محلل_الرموز(رموز);
-            شفرة_مترجمة = إنشاء_الشفرة(ast);
-            eval(شفرة_مترجمة);
+            eval(إنشاء_الشفرة(محلل_الرموز(تحليل_الشفرة(شفرة))));
         } catch (e) {
-            console.error(
-                "خطأ أثناء التوليد:",
-                e.line ? e.message + " " + e.line : e
-            );
+            console.error(e.line, e.message);
         }
     });
 } else {
