@@ -2,7 +2,7 @@ import { احصل, التالي, تحقق, تطابق } from "./TokenUtils.js";
 import { محلل_الجملة } from "../AlifParser.js";
 import { رمي_خطأ } from "./AlifErrors.js";
 
-export function إدارة_المسافة_البادئة(الرموز, الكلمة, الدالة_الام) {
+export function إدارة_المسافة_البادئة(الرموز, الدالة_الام, الكلمة) {
     const اوامر = [];
     const السطر = احصل(الرموز).السطر;
 
