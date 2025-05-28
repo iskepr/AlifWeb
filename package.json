@@ -36,6 +36,7 @@
         "mime-types": "^3.0.1",
         "node-fetch": "^2.7.0",
         "pkg": "^5.8.1",
+        "prompt-sync": "^4.2.0",
         "terser": "^5.39.0"
     }
 }

@@ -6,6 +6,7 @@ import { إعادة_تعيين_المؤشر } from "../src/Core/TokenUtils.js";
 const editor = window.editor;
 const زر_التشغيل = document.getElementById("run");
 const الناتج = document.getElementById("output");
+const وقت_التشغيل = document.getElementById("time");
 
 زر_التشغيل.addEventListener("click", تشغيل_الكود);
 
@@ -17,6 +18,8 @@ async function تشغيل_الكود() {
             return عرض_النتيجة("الرجاء إدخال كود للتنفيذ", "error");
 
         الناتج.innerHTML = "جاري التشغيل...";
+        const بداية_الوقت = performance.now();
+
         const رموز = تحليل_الشفرة(شفرة);
         const ast = محلل_الرموز(رموز);
         const كود_مترجم = إنشاء_الشفرة(ast);
@@ -70,13 +73,18 @@ async function تشغيل_الكود() {
                     Object.assign(console, الأصل);
                 }
             });
+            const نهاية_الوقت = performance.now();
+            const الوقت_المستغرق = (نهاية_الوقت - بداية_الوقت).toFixed(2);
+            وقت_التشغيل.textContent = `الوقت المستغرق: ${الوقت_المستغرق} مللي ثانية`;
             الناتج.className = "output-code success";
         } catch (خطأ_التنفيذ) {
             await عرض_النتيجة(`خطأ أثناء التنفيذ: ${خطأ_التنفيذ}`, "error");
         }
     } catch (خطأ) {
         console.log(خطأ);
-
+        const نهاية_الوقت = performance.now();
+        const الوقت_المستغرق = (نهاية_الوقت - بداية_الوقت).toFixed(2);
+        وقت_التشغيل.textContent = `الوقت المستغرق: ${الوقت_المستغرق} مللي ثانية`;
         await عرض_النتيجة(`${خطأ.line}: ${خطأ.message}`, "error");
     }
 }

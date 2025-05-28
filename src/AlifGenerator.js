@@ -13,6 +13,7 @@ import { منشئ_الوقت } from "./Core/Libraries/AlifTime.js";
 import { منشئ_الرياضيات } from "./Core/Libraries/AlifMath.js";
 import { منشئ_حاول } from "./Core/Statements/AlifTry.js";
 import { منشئ_صنف } from "./Core/Statements/AlifClass.js";
+import { منشئ_استورد } from "./Core/Statements/AlifImport.js";
 
 export function إنشاء_الشفرة(
     ast,
@@ -26,10 +27,6 @@ export function إنشاء_الشفرة(
                 .map((ج) => إنشاء_الشفرة(ج, مستوى, عداد, true))
                 .join("\n");
             return `
-            const __fragment = document.getElementById("root");
-            const التصميم = document.createElement("style");
-            التصميم.textContent = \`* {padding: 0; margin: 0; box-sizing: border-box;}\`;
-            document.head.appendChild(التصميم);
             function مدى(البداية, النهاية, خطوة = 1) {
                 let الناتج = [];
                 if (خطوة > 0) {
@@ -42,18 +39,6 @@ export function إنشاء_الشفرة(
                     }
                 }
                 return الناتج;
-            }
-            function المضروب(رقم) {
-                if (رقم < 0) return undefined;
-                if (رقم === 0 || رقم === 1) return 1;
-                let الناتج = 1;
-                for (let i = 2; i <= رقم; i++) {
-                    الناتج *= i;
-                }
-                return الناتج;
-            }
-            function مسافة(نقطة1, نقطة2) {
-                return Math.sqrt((نقطة2[0] - نقطة1[0]) ** 2 + (نقطة2[1] - نقطة1[1]) ** 2);
             }
             async function AlifApp() {
             ${كود}
@@ -131,10 +116,7 @@ export function إنشاء_الشفرة(
                 .join(", ");
             return `return [${قيم}];`;
         },
-        استورد: (عقدة) => {
-            if (عقدة.قيمة == null) return "";
-            return `import "${عقدة.قيمة}";`;
-        },
+        استورد: (عقدة) => منشئ_استورد(عقدة, مستوى, عداد),
         احذف: (عقدة) => `${إنشاء_الشفرة(عقدة.قيمة, مستوى, عداد)} = undefined;`,
         عام: () => ``,
         استمر: () => `continue;`,
