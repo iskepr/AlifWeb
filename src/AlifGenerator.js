@@ -1,9 +1,5 @@
 import { منشئ_عام_للاقواس } from "./Core/Statements/AlifGeneral.js";
-import {
-    ذاكرة_المتغيرات,
-    منشئ_متغير,
-    منشئ_متغير_مجمع,
-} from "./Core/Statements/AlifVariable.js";
+import { منشئ_متغير, منشئ_متغير_مجمع } from "./Core/Statements/AlifVariable.js";
 import { منشئ_لاجل } from "./Core/Statements/AlifFor.js";
 import { منشئ_بينما } from "./Core/Statements/AlifWhile.js";
 import {
