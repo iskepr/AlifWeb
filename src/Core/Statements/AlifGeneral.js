@@ -32,23 +32,20 @@ export function محلل_عام_للاقواس(الرموز, الدالة_الا
 
 export function منشئ_عام_للاقواس(
     مستوى,
-    عداد,
-    دالة,
-    { عداد_مصوفة = false, إضافة = "", هل_مصفوفة = false } = {}
+    عقدة,
+    الامر,
+    { عداد_مصوفة = false, اضافة = "", هل_مصفوفة = false } = {}
 ) {
-    return (عقدة) => {
-        const vals = عقدة.قيم.map((v) => إنشاء_الشفرة(v, مستوى, عداد));
-        const filtered = vals.filter((v) => v !== "0");
-        let القيمة;
-        if (عداد_مصوفة) {
-            القيمة = filtered.map((v) => v).join(", ");
-        } else {
-            القيمة = filtered.join(", ");
-        }
-        return `${دالة}(${
-            هل_مصفوفة ? "JSON.stringify(" + القيمة + ")" : القيمة
-        })${إضافة}`;
-    };
+    const vals = عقدة.قيم.map((v) => إنشاء_الشفرة(v, مستوى));
+    const filtered = vals.filter((v) => v !== "0");
+
+    let القيمة;
+    if (عداد_مصوفة) القيمة = filtered.map((v) => v).join(", ");
+    else القيمة = filtered.join(", ").replaceAll("هذا", "this");
+
+    return `${الامر}(${
+        هل_مصفوفة ? "JSON.stringify(" + القيمة + ")" : القيمة
+    })${اضافة}`;
 }
 
 export function محلل_عام_للكلمات(الرموز, الدالة_الام, الكلمة) {
