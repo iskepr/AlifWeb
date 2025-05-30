@@ -1,9 +1,9 @@
 import { احصل, التالي, السابق } from "./TokenUtils.js";
 
 export function رمي_خطأ(الرسالة, الرموز, الدالة_الام) {
-    if (الدالة_الام.includes("حاول")) {
+    if (الدالة_الام.includes("حاول"))
         console.log(الرسالة, احصل(الرموز).السطر, الدالة_الام);
-    }
+
     const error = new Error(الرسالة);
     let السطر = احصل(الرموز);
     if (!السطر) {

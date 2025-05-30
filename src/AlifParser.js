@@ -18,6 +18,7 @@ import { محلل_استورد } from "./Core/Statements/AlifImport.js";
 import { محلل_الرياضيات } from "./Core/Libraries/AlifMath.js";
 import { محلل_حاول, محلل_خلل, محلل_نهاية } from "./Core/Statements/AlifTry.js";
 import { محلل_صنف } from "./Core/Statements/AlifClass.js";
+import { رمي_خطأ } from "./Core/AlifErrors.js";
 
 export const محللات = {
     اطبع: محلل_عام_للاقواس,
@@ -86,6 +87,10 @@ export function محلل_الجملة(الرموز, الدالة_الام) {
 
     const رمز = احصل(الرموز);
     التالي(الرموز);
+    if (رمز.النوع == "مسافة") {
+        if (!تحقق(الرموز, "سطر_جديد"))
+            رمي_خطأ("مسافة غير معروفة", الرموز, الدالة_الام);
+    }
     return { نوع: "غير_معروف", رمز };
 }
 
