@@ -9,15 +9,17 @@
 
 -   كتابة الشيفرة بكلمات عربية بالكامل
 -   إطار عمل كامل باللغة العربية
--   التحويل الى html, css, js  I
+-   التحويل الى html, css, js I
 
 ## التشغيل
 
-### المتطلبات
+### محليا
+
+#### المتطلبات
 
 -   Node.js 18 أو أحدث
 
-### التثبيت والتشغيل
+#### التثبيت والتشغيل
 
 ```bash
 git clone https://github.com/iskepr/AlifWeb.git
@@ -26,10 +28,20 @@ npm install
 node alifweb اسم_الملف.الف
 ```
 
-### البناء
+#### البناء
 
 ```bash
 npm run build
+```
+
+### في الموقع cdn
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/iskepr/AlifWeb/Lib/AlifWeb.js"></script>
+<script>
+    const الناتج = Alif("شفرة الف");
+    eval(الناتج);
+</script>
 ```
 
 ## المساهمة
