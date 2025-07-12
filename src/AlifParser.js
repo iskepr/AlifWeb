@@ -95,12 +95,6 @@ export function محلل_الجملة(الرموز, الدالة_الام) {
 }
 
 export function محلل_الرموز(الرموز) {
-    if (!الرموز || !Array.isArray(الرموز)) {
-        throw new Error(
-            "الرموز غير معرفة أو غير صحيحة 'محلل_الرموز' " + الرموز
-        );
-    }
-
     function ابدأ() {
         const جمل = [];
         while (المؤشر < الرموز.length) {

@@ -106,3 +106,10 @@ export function منشئ_عام_الواجهة(عقدة, عداد, نوع = "div
     سطور.push(`__fragment.appendChild(${اسم});`);
     return سطور.join("\n\t");
 }
+
+export function دوال_استيراد_الواجهة() {
+    return `const __fragment = document.getElementById("root");
+                    const التصميم = document.createElement("style");
+                    التصميم.textContent = \`* {padding: 0; margin: 0; box-sizing: border-box;}\`;
+                    document.head.appendChild(التصميم);`;
+}

@@ -1,50 +1,47 @@
-import { محلل_التعبير } from "../Expressions.js";
+import path from "path";
+import fs from "fs";
+import { تحليل_الشفرة } from "../../AlifLexer.js";
+import { محلل_الرموز } from "../../AlifParser.js";
+import { إنشاء_الشفرة } from "../../AlifGenerator.js";
+
+import { دوال_استيراد_الرياضيات } from "../Libraries/AlifMath.js";
 import { دوال_استيراد_الوقت } from "../Libraries/AlifTime.js";
-import { احصل, التالي, تحقق, تطابق } from "../TokenUtils.js";
+import {
+    إعادة_تعيين_المؤشر,
+    احصل,
+    التالي,
+    تحقق,
+    تطابق,
+} from "../TokenUtils.js";
+import { دوال_استيراد_الواجهة } from "./AlifUI.js";
 
 export function محلل_استورد(الرموز) {
-    if (!الرموز || !Array.isArray(الرموز)) {
-        throw new Error(
-            'الرموز غير معرفة أو غير صحيحة "محلل_استورد" ' + الرموز
-        );
-    }
     تطابق(الرموز, "كلمة", "استورد");
-    if (تحقق(الرموز, "معرف", "واجهة")) {
+
+    let قيم = [];
+    while (true) {
+        قيم.push(احصل(الرموز).القيمة);
         التالي(الرموز);
-        return { نوع: "استورد", قيمة: "واجهة" };
-    } else if (تحقق(الرموز, "كلمة")) {
-        const قيمة = احصل(الرموز).القيمة;
-        التالي(الرموز);
-        return { نوع: "استورد", قيمة };
-    } else {
-        const قيمة = محلل_التعبير(الرموز);
-        return { نوع: "استورد", قيمة };
+        if (تحقق(الرموز, "نقطة")) التالي(الرموز);
+        if (تحقق(الرموز, "سطر_جديد")) break;
     }
+    return { نوع: "استورد", قيم };
 }
 
 export function منشئ_استورد(عقدة) {
-    if (عقدة.قيمة == null) {
-        return "";
-    } else if (عقدة.قيمة == "واجهة") {
-        return `const __fragment = document.getElementById("root");
-                    const التصميم = document.createElement("style");
-                    التصميم.textContent = \`* {padding: 0; margin: 0; box-sizing: border-box;}\`;
-                    document.head.appendChild(التصميم);`;
-    } else if (عقدة.قيمة == "الرياضيات") {
-        return `function المضروب(رقم) {
-                        if (رقم < 0) return undefined;
-                        if (رقم === 0 || رقم === 1) return 1;
-                        let الناتج = 1;
-                        for (let i = 2; i <= رقم; i++) {
-                            الناتج *= i;
-                        }
-                        return الناتج;
-                    }
-                    function مسافة(نقطة1, نقطة2) {
-                        return Math.sqrt((نقطة2[0] - نقطة1[0]) ** 2 + (نقطة2[1] - نقطة1[1]) ** 2);
-                    }`;
-    } else if (عقدة.قيمة == "الوقت") return دوال_استيراد_الوقت();
-    else {
-        return `import "${عقدة.قيمة}";`;
-    }
+    if (عقدة.قيم.length == 0) return "";
+    else if (عقدة.قيم[0] == "واجهة") return دوال_استيراد_الواجهة();
+    else if (عقدة.قيم[0] == "الرياضيات") return دوال_استيراد_الرياضيات();
+    else if (عقدة.قيم[0] == "الوقت") return دوال_استيراد_الوقت();
+
+    const مسار_الملف = path.join(
+        process.cwd(),
+        ...عقدة.قيم.slice(0, -1),
+        عقدة.قيم.at(-1) + ".aliflib"
+    );
+
+    const شفرة_الملف = fs.readFileSync(مسار_الملف, "utf8");
+    إعادة_تعيين_المؤشر();
+    const كود_مترجم = إنشاء_الشفرة(محلل_الرموز(تحليل_الشفرة(شفرة_الملف)));
+    return كود_مترجم.slice(520, -30);
 }
