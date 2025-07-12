@@ -18,7 +18,6 @@ import { محلل_استورد } from "./Core/Statements/AlifImport.js";
 import { محلل_الرياضيات } from "./Core/Libraries/AlifMath.js";
 import { محلل_حاول, محلل_خلل, محلل_نهاية } from "./Core/Statements/AlifTry.js";
 import { محلل_صنف } from "./Core/Statements/AlifClass.js";
-import { رمي_خطأ } from "./Core/AlifErrors.js";
 
 export const محللات = {
     اطبع: محلل_عام_للاقواس,
@@ -35,6 +34,8 @@ export const محللات = {
     ادرج: محلل_عام_للاقواس_يسبقها_نقطة,
     امسح: محلل_عام_للاقواس_يسبقها_نقطة,
     مفاتيح: محلل_عام_للاقواس_يسبقها_نقطة,
+    قيم: محلل_عام_للاقواس_يسبقها_نقطة,
+    رتب: محلل_عام_للاقواس_يسبقها_نقطة,
     استمر: محلل_عام_للكلمات,
     توقف: محلل_عام_للكلمات,
     عام: محلل_عام_للكلمات_بقيمة,
