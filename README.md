@@ -39,8 +39,8 @@ npm run build
 ```html
 <script src="https://cdn.jsdelivr.net/gh/iskepr/AlifWeb/Lib/AlifWeb.js"></script>
 <script>
-    const الناتج = Alif("شفرة الف");
-    eval(الناتج);
+    eval(Alif("شفرة الف"));
+    !! ملحوظة: الطباعة موجودة في الكونسول
 </script>
 ```
 
