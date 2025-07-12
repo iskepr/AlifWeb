@@ -11,7 +11,7 @@ import { منشئ_عمليات } from "./Core/Statements/AlifOperations.js";
 import { منشئ_عام_الواجهة } from "./Core/Statements/AlifUI.js";
 import { منشئ_الوقت } from "./Core/Libraries/AlifTime.js";
 import { منشئ_الرياضيات } from "./Core/Libraries/AlifMath.js";
-import { منشئ_حاول } from "./Core/Statements/AlifTry.js";
+import { منشئ_حاول, منشئ_خلل, منشئ_نهاية } from "./Core/Statements/AlifTry.js";
 import { منشئ_صنف } from "./Core/Statements/AlifClass.js";
 import { منشئ_استورد } from "./Core/Statements/AlifImport.js";
 import { منشئ_اشعار } from "./Core/Libraries/AlifSystem.js";
@@ -147,8 +147,8 @@ export function إنشاء_الشفرة(
         استدعاء_دالة: (عقدة) => منشئ_استدعاء_دالة(مستوى, عداد, عقدة),
 
         حاول: (عقدة) => منشئ_حاول(مستوى, عداد, عقدة, داخل_برنامج),
-        خلل: (عقدة) => منشئ_حاول(مستوى, عداد, عقدة, داخل_برنامج),
-        نهاية: (عقدة) => منشئ_حاول(مستوى, عداد, عقدة, داخل_برنامج),
+        خلل: (عقدة) => منشئ_خلل(مستوى, عداد, عقدة, داخل_برنامج),
+        نهاية: (عقدة) => منشئ_نهاية(مستوى, عداد, عقدة, داخل_برنامج),
 
         اذا: (عقدة) => منشئ_اذا(مستوى, عداد, عقدة, داخل_برنامج),
         إذا: (عقدة) => منشئ_اذا(مستوى, عداد, عقدة, داخل_برنامج),
