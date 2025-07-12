@@ -5,10 +5,16 @@ import { إعادة_تعيين_المؤشر } from "../src/Core/TokenUtils.js";
 
 const editor = window.editor;
 const زر_التشغيل = document.getElementById("run");
+const زر_المسح = document.getElementById("clear"); // افتراض وجود زر بـ id="clear"
 const الناتج = document.getElementById("output");
 const وقت_التشغيل = document.getElementById("time");
 
 زر_التشغيل.addEventListener("click", تشغيل_الكود);
+زر_المسح?.addEventListener("click", () => {
+    الناتج.innerHTML = "";
+    الناتج.className = "output-code";
+    وقت_التشغيل.textContent = "";
+});
 
 async function تشغيل_الكود() {
     try {
@@ -23,6 +29,7 @@ async function تشغيل_الكود() {
         const رموز = تحليل_الشفرة(شفرة);
         const ast = محلل_الرموز(رموز);
         const كود_مترجم = إنشاء_الشفرة(ast);
+
         const الأصل = {
             log: console.log,
             error: console.error,
@@ -38,54 +45,55 @@ async function تشغيل_الكود() {
                     span.textContent = JSON.stringify(val, null, 2);
                 } else {
                     span.textContent =
-                        typeof val === "string" ? `"${val}"` : String(val);
+                        typeof val === "string" ? val : String(val);
                 }
                 div.appendChild(span);
                 if (idx < args.length - 1)
                     div.appendChild(document.createElement("br"));
             });
             الناتج.appendChild(div);
+            requestAnimationFrame(() => {});
         };
 
-        ["log", "error", "warn"].forEach((k) => {
-            console[k] = (...args) => {
+        const consoleLocal = {
+            log: (...args) => {
                 طباعة_في_العنصر(...args);
-                الأصل[k](...args);
-            };
-        });
+                الأصل.log(...args);
+            },
+            error: (...args) => {
+                طباعة_في_العنصر(...args);
+                الأصل.error(...args);
+            },
+            warn: (...args) => {
+                طباعة_في_العنصر(...args);
+                الأصل.warn(...args);
+            },
+        };
 
         try {
             الناتج.innerHTML = "";
-            await new Promise(async (resolve, reject) => {
-                try {
-                    const result = eval(كود_مترجم);
-                    if (result instanceof Promise) {
-                        const resolvedResult = await result;
-                        if (resolvedResult !== undefined)
-                            طباعة_في_العنصر(resolvedResult);
-                    } else if (result !== undefined) {
-                        طباعة_في_العنصر(result);
-                    }
-                    resolve();
-                } catch (error) {
-                    reject(error);
-                } finally {
-                    Object.assign(console, الأصل);
-                }
-            });
+            const دالة_التنفيذ = new Function(
+                "console",
+                `return (async () => { ${كود_مترجم} })()`
+            );
+            const result = await دالة_التنفيذ(consoleLocal);
+            if (result !== undefined) طباعة_في_العنصر(result);
+
             const نهاية_الوقت = performance.now();
             const الوقت_المستغرق = (نهاية_الوقت - بداية_الوقت).toFixed(2);
             وقت_التشغيل.textContent = `الوقت المستغرق: ${الوقت_المستغرق} مللي ثانية`;
             الناتج.className = "output-code success";
         } catch (خطأ_التنفيذ) {
-            await عرض_النتيجة(`خطأ أثناء التنفيذ: ${خطأ_التنفيذ}`, "error");
+            await عرض_النتيجة(
+                `خطأ أثناء التنفيذ: ${خطأ_التنفيذ.message}`,
+                "error"
+            );
         }
     } catch (خطأ) {
-        console.log(خطأ);
-        const نهاية_الوقت = performance.now();
-        const الوقت_المستغرق = (نهاية_الوقت - بداية_الوقت).toFixed(2);
-        وقت_التشغيل.textContent = `الوقت المستغرق: ${الوقت_المستغرق} مللي ثانية`;
-        await عرض_النتيجة(`${خطأ.line}: ${خطأ.message}`, "error");
+        const رسالة_الخطأ = خطأ.line
+            ? `${خطأ.line}: ${خطأ.message}`
+            : خطأ.message;
+        await عرض_النتيجة(رسالة_الخطأ, "error");
     }
 }
 
@@ -96,19 +104,22 @@ async function عرض_النتيجة(نص, نوع) {
         (typeof نص === "string" && نص.includes("[object DocumentFragment]"))
     )
         return;
+
     if (نص instanceof Promise) {
         try {
             return عرض_النتيجة(await نص, نوع);
         } catch (error) {
-            return عرض_النتيجة(`${error}`, "error");
+            return عرض_النتيجة(`خطأ: ${error}`, "error");
         }
     }
+
     const append = (content) => {
         const div = document.createElement("div");
         div.className = "output-content";
         div.textContent = content;
         الناتج.appendChild(div);
     };
+
     if (Array.isArray(نص)) {
         if (!نص.length) append("");
         else
