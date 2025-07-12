@@ -13,7 +13,8 @@
     "main": "alifweb",
     "scripts": {
         "start": "node alifweb",
-        "build": "./Build"
+        "build": "./scripts/Build",
+        "build-web": "node scripts/build-web.js"
     },
     "bin": {
         "alifweb": "alifweb"
