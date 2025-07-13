@@ -1,5 +1,3 @@
-import path from "path";
-import fs from "fs";
 import { تحليل_الشفرة } from "../../AlifLexer.js";
 import { محلل_الرموز } from "../../AlifParser.js";
 import { إنشاء_الشفرة } from "../../AlifGenerator.js";
@@ -28,6 +26,12 @@ export function محلل_استورد(الرموز) {
     return { نوع: "استورد", قيم };
 }
 
+let path, fs;
+if (typeof window === "undefined")
+    (async () => {
+        path = (await import("path")).default;
+        fs = (await import("fs")).default;
+    })();
 export function منشئ_استورد(عقدة) {
     if (عقدة.قيم.length == 0) return "";
     else if (عقدة.قيم[0] == "واجهة") return دوال_استيراد_الواجهة();
@@ -39,8 +43,8 @@ export function منشئ_استورد(عقدة) {
         ...عقدة.قيم.slice(0, -1),
         عقدة.قيم.at(-1) + ".aliflib"
     );
-
     const شفرة_الملف = fs.readFileSync(مسار_الملف, "utf8");
+
     إعادة_تعيين_المؤشر();
     const كود_مترجم = إنشاء_الشفرة(محلل_الرموز(تحليل_الشفرة(شفرة_الملف)));
     return كود_مترجم.slice(520, -30);

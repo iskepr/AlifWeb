@@ -5,16 +5,10 @@ import { إعادة_تعيين_المؤشر } from "../src/Core/TokenUtils.js";
 
 const editor = window.editor;
 const زر_التشغيل = document.getElementById("run");
-const زر_المسح = document.getElementById("clear"); // افتراض وجود زر بـ id="clear"
 const الناتج = document.getElementById("output");
 const وقت_التشغيل = document.getElementById("time");
 
 زر_التشغيل.addEventListener("click", تشغيل_الكود);
-زر_المسح?.addEventListener("click", () => {
-    الناتج.innerHTML = "";
-    الناتج.className = "output-code";
-    وقت_التشغيل.textContent = "";
-});
 
 async function تشغيل_الكود() {
     try {
