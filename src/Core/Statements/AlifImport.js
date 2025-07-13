@@ -4,6 +4,7 @@ import { إنشاء_الشفرة } from "../../AlifGenerator.js";
 
 import { دوال_استيراد_الرياضيات } from "../Libraries/AlifMath.js";
 import { دوال_استيراد_الوقت } from "../Libraries/AlifTime.js";
+import { دوال_استيراد_الواجهة } from "./AlifUI.js";
 import {
     إعادة_تعيين_المؤشر,
     احصل,
@@ -11,7 +12,12 @@ import {
     تحقق,
     تطابق,
 } from "../TokenUtils.js";
-import { دوال_استيراد_الواجهة } from "./AlifUI.js";
+let path, fs;
+if (typeof window === "undefined")
+    (async () => {
+        path = (await import("path")).default;
+        fs = (await import("fs")).default;
+    })();
 
 export function محلل_استورد(الرموز) {
     تطابق(الرموز, "كلمة", "استورد");
@@ -26,12 +32,6 @@ export function محلل_استورد(الرموز) {
     return { نوع: "استورد", قيم };
 }
 
-let path, fs;
-if (typeof window === "undefined")
-    (async () => {
-        path = (await import("path")).default;
-        fs = (await import("fs")).default;
-    })();
 export function منشئ_استورد(عقدة) {
     if (عقدة.قيم.length == 0) return "";
     else if (عقدة.قيم[0] == "واجهة") return دوال_استيراد_الواجهة();
@@ -48,7 +48,7 @@ export function منشئ_استورد(عقدة) {
     إعادة_تعيين_المؤشر();
     const شفرة_مترجمة = إنشاء_الشفرة(
         محلل_الرموز(تحليل_الشفرة(شفرة_الملف))
-    ).slice(520, -30);
+    ).slice(750, -30);
 
     function استخراج_العامة(الشفرة) {
         const الدوال = [];
@@ -76,14 +76,15 @@ export function منشئ_استورد(عقدة) {
                 if (حرف === "}") المستوى--;
             }
         }
-        return { الدوال, المتغيرات };
+        return [...الدوال, ...المتغيرات];
     }
-    const { الدوال, المتغيرات } = استخراج_العامة(شفرة_مترجمة);
+    const متغيرات_الشفرة = استخراج_العامة(شفرة_مترجمة);
+    console.log(متغيرات_الشفرة);
 
     const الشفرة_المستردة = `
     function دالة_استيراد_${عقدة.قيم.at(-1)}() {
         ${شفرة_مترجمة}
-        return { ${الدوال.join(", ")}, ${المتغيرات.join(", ")}};
+        return { ${متغيرات_الشفرة.join(", ")}};
     }
     const ${عقدة.قيم.at(-1)} = دالة_استيراد_${عقدة.قيم.at(-1)}();
     `;

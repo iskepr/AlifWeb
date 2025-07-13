@@ -44,6 +44,11 @@ export function إنشاء_الشفرة(
                 }
                 return الناتج;
             }
+            function طول(المدخل) {
+                if (Array.isArray(المدخل)) return المدخل.length;
+                else if (typeof المدخل === "object" && المدخل !== null)
+                    return Object.keys(المدخل).length;
+            }
             async function AlifApp() {
             ${كود}
             }
@@ -55,10 +60,7 @@ export function إنشاء_الشفرة(
 
         اطبع: (عقدة) => منشئ_عام_للاقواس(مستوى, عقدة, "console.log"),
         ادخل: (عقدة) => منشئ_عام_للاقواس(مستوى, عقدة, "prompt"),
-        طول: (عقدة) =>
-            منشئ_عام_للاقواس(مستوى, عقدة, "Object.keys", {
-                اضافة: ".length",
-            }),
+        طول: (عقدة) => `طول(${إنشاء_الشفرة(عقدة.قيم[0], مستوى, عداد)})`,
         اقصى: (عقدة) =>
             منشئ_عام_للاقواس(مستوى, عقدة, "Math.max", {
                 عداد_مصوفة: true,
@@ -212,7 +214,7 @@ export function إنشاء_الشفرة(
                 عقدة,
                 عداد,
                 "div",
-                "height: 100vh; direction: rtl;"
+                "height: 100vh; width: 100vw; direction: rtl; overflow-x: hidden; overflow-y: scroll;"
             ),
 
         نص: (عقدة) => منشئ_عام_الواجهة(عقدة, عداد, "p"),
@@ -237,15 +239,16 @@ export function إنشاء_الشفرة(
                 عقدة,
                 عداد,
                 "div",
-                "display:flex; align-items: center; justify-content: center;"
+                "display:flex; align-items: center; justify-content: center; flex-direction:column;"
             ),
         بطاقة: (عقدة) =>
             منشئ_عام_الواجهة(
                 عقدة,
                 عداد,
                 "div",
-                "margin: 10px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;"
+                "margin: 5px; padding: 10px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background-color: #ffffff05;"
             ),
+        صوت: (عقدة) => منشئ_عام_الواجهة(عقدة, عداد, "audio", "border-radius: 10px;"),
     };
 
     // التعامل مع المسافات و الاسطر الفارغة
